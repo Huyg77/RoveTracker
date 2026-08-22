@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#201b1a">
+  <title>Rove — Hitpoint Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">ROVE</p>
+        <h1>Hitpoint Tracker</h1>
+      </div>
+      <button id="resetButton" class="secondary-button" type="button">Reset</button>
+    </header>
+
+    <section class="board" aria-label="Hitpoints van monsters">
+      <div id="monsterGroups"></div>
+    </section>
+
+    <p class="hint">Klik op een veld om de actuele hitpoints in te voeren of te wijzigen.</p>
+  </main>
+
+  <dialog id="hpDialog">
+    <form method="dialog" id="hpForm" class="modal">
+      <button class="close-button" type="button" id="closeButton" aria-label="Sluiten">×</button>
+      <p class="eyebrow" id="dialogMonster">MONSTER A</p>
+      <h2 id="dialogTitle">Veld 1</h2>
+
+      <label for="hpInput">Actuele hitpoints</label>
+      <input id="hpInput" name="hp" type="number" inputmode="numeric" min="0" step="1" placeholder="Bijv. 12" autocomplete="off" required>
+
+      <div class="modal-actions">
+        <button class="secondary-button" type="button" id="clearButton">Leegmaken</button>
+        <button class="primary-button" value="save">Opslaan</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
