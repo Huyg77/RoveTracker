@@ -1,31 +1,25 @@
 # Rove Hitpoint Tracker
 
-Een eenvoudige webapp voor het bijhouden van de actuele hitpoints van de 24 monster-velden uit Rove.
+Een eenvoudige webapp voor het bijhouden van de actuele hitpoints van de monster-velden uit Rove.
 
 ## Functies
 
-- Monster A, B en C
+- Monster A, B en C worden standaard getoond
+- Met de `+`-knop kun je achtereenvolgens monster D, E en F toevoegen
 - 8 velden per monster
 - Klik op een veld om hitpoints in te voeren
 - Klik later opnieuw om de hitpoints te wijzigen
 - Een veld kan ook weer leeg worden gemaakt
-- De gegevens blijven bewaard in de browser via `localStorage`
+- Hitpoints en toegevoegde monsters blijven bewaard in de browser via `localStorage`
 - Werkt op desktop, tablet en mobiel
 - Geen backend of installatie nodig
 
-## Op GitHub zetten
+## GitHub Pages
 
-1. Maak op GitHub een nieuwe repository, bijvoorbeeld `rove-hitpoint-tracker`.
-2. Upload `index.html`, `styles.css` en `script.js`.
-3. Ga naar **Settings → Pages**.
-4. Kies **Deploy from a branch**.
-5. Selecteer de branch `main` en map `/ (root)`.
-6. Sla op. GitHub geeft daarna de URL van je webapp.
+Upload `index.html`, `styles.css` en `script.js` naar de hoofdmap van je repository. Zet daarna GitHub Pages aan via:
 
-## Lokaal testen
-
-Open `index.html` in je browser. Voor deze eenvoudige app is geen server nodig.
+**Settings → Pages → Deploy from a branch → main → / (root)**
 
 ## Opslag
 
-De hitpoints worden alleen lokaal in de browser opgeslagen. Als je de site op een andere telefoon/computer opent, zijn de waarden daar niet automatisch zichtbaar.
+De hitpoints en de keuze om D/E/F toe te voegen worden alleen lokaal in de browser opgeslagen. Een andere telefoon/computer heeft eigen waarden.

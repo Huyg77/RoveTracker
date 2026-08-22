@@ -1,6 +1,17 @@
 const STORAGE_KEY = "rove-hitpoints-v1";
+const ACTIVE_MONSTERS_KEY = "rove-active-monsters-v1";
+const DEFAULT_MONSTERS = ["A", "B", "C"];
+const OPTIONAL_MONSTERS = ["D", "E", "F"];
 
 const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+let activeMonsters = JSON.parse(
+  localStorage.getItem(ACTIVE_MONSTERS_KEY) || JSON.stringify(DEFAULT_MONSTERS)
+);
+
+// Zorg ervoor dat bestaande/ongeldige opgeslagen instellingen nooit de basis A-C verwijderen.
+activeMonsters = DEFAULT_MONSTERS.concat(
+  OPTIONAL_MONSTERS.filter((monster) => activeMonsters.includes(monster))
+);
 
 const monsterGroups = document.getElementById("monsterGroups");
 const dialog = document.getElementById("hpDialog");
@@ -11,11 +22,16 @@ const dialogTitle = document.getElementById("dialogTitle");
 const closeButton = document.getElementById("closeButton");
 const clearButton = document.getElementById("clearButton");
 const resetButton = document.getElementById("resetButton");
+const addMonsterButton = document.getElementById("addMonsterButton");
 
 let selectedId = null;
 
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function saveActiveMonsters() {
+  localStorage.setItem(ACTIVE_MONSTERS_KEY, JSON.stringify(activeMonsters));
 }
 
 function createGroup(monster) {
@@ -52,12 +68,45 @@ function createGroup(monster) {
   return group;
 }
 
+function updateAddButton() {
+  const nextMonster = OPTIONAL_MONSTERS.find(
+    (monster) => !activeMonsters.includes(monster)
+  );
+
+  if (nextMonster) {
+    addMonsterButton.disabled = false;
+    addMonsterButton.title = `Monster ${nextMonster} toevoegen`;
+    addMonsterButton.setAttribute(
+      "aria-label",
+      `Monster ${nextMonster} toevoegen`
+    );
+  } else {
+    addMonsterButton.disabled = true;
+    addMonsterButton.title = "Alle monsters D, E en F zijn toegevoegd";
+    addMonsterButton.setAttribute(
+      "aria-label",
+      "Alle monsters D, E en F zijn toegevoegd"
+    );
+  }
+}
+
 function render() {
   monsterGroups.replaceChildren(
-    createGroup("A"),
-    createGroup("B"),
-    createGroup("C")
+    ...activeMonsters.map((monster) => createGroup(monster))
   );
+  updateAddButton();
+}
+
+function addNextMonster() {
+  const nextMonster = OPTIONAL_MONSTERS.find(
+    (monster) => !activeMonsters.includes(monster)
+  );
+
+  if (!nextMonster) return;
+
+  activeMonsters.push(nextMonster);
+  saveActiveMonsters();
+  render();
 }
 
 function openEditor(monster, number) {
@@ -105,9 +154,11 @@ dialog.addEventListener("click", (event) => {
   if (event.target === dialog) closeDialog();
 });
 
+addMonsterButton.addEventListener("click", addNextMonster);
+
 resetButton.addEventListener("click", () => {
   const confirmed = window.confirm(
-    "Alle ingevulde hitpoints wissen? Dit kan niet ongedaan worden gemaakt."
+    "Alle ingevulde hitpoints wissen? De toegevoegde monsters blijven zichtbaar."
   );
 
   if (!confirmed) return;

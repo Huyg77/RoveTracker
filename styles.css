@@ -43,6 +43,12 @@ input {
   margin-bottom: 22px;
 }
 
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .eyebrow {
   margin: 0 0 3px;
   color: #d5bdb0;
@@ -158,15 +164,9 @@ h1 {
   font-weight: 500;
 }
 
-.hint {
-  margin: 15px 2px 0;
-  color: var(--muted);
-  text-align: center;
-  font-size: .9rem;
-}
-
 .primary-button,
 .secondary-button,
+.add-button,
 .close-button {
   border: 0;
   cursor: pointer;
@@ -196,6 +196,27 @@ h1 {
 
 .secondary-button:hover {
   background: #51423d;
+}
+
+.add-button {
+  width: 42px;
+  height: 42px;
+  border-radius: 9px;
+  background: var(--red);
+  color: white;
+  border: 1px solid #b04a44;
+  font-size: 1.7rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.add-button:hover {
+  background: #a52a25;
+}
+
+.add-button:disabled {
+  cursor: default;
+  opacity: .35;
 }
 
 dialog {
@@ -272,6 +293,13 @@ dialog::backdrop {
   color: white;
 }
 
+.hint {
+  margin: 15px 2px 0;
+  color: var(--muted);
+  text-align: center;
+  font-size: .9rem;
+}
+
 @media (max-width: 560px) {
   .app {
     width: min(100% - 18px, 920px);
@@ -280,6 +308,15 @@ dialog::backdrop {
 
   .topbar {
     margin-bottom: 14px;
+  }
+
+  .topbar-actions {
+    gap: 6px;
+  }
+
+  .add-button {
+    width: 40px;
+    height: 40px;
   }
 
   .board {
