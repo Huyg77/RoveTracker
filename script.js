@@ -40,7 +40,7 @@ function createGroup(monster) {
 
   const title = document.createElement("h2");
   title.className = "group-title";
-  title.innerHTML = `<span>${monster}</span> Monster ${monster}`;
+  title.innerHTML = `<span>${monster}</span>`;
 
   const grid = document.createElement("div");
   grid.className = "hp-grid";

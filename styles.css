@@ -302,50 +302,105 @@ dialog::backdrop {
 
 @media (max-width: 560px) {
   .app {
-    width: min(100% - 18px, 920px);
-    padding-top: 16px;
+    width: calc(100% - 10px);
+    padding-top: 10px;
   }
 
   .topbar {
-    margin-bottom: 14px;
+    margin-bottom: 1px;
+  }
+
+  .topbar h1 {
+    font-size: 1.15rem;
+  }
+
+  .eyebrow {
+    font-size: .58rem;
+    margin-bottom: 1px;
   }
 
   .topbar-actions {
-    gap: 6px;
+    gap: 5px;
   }
 
   .add-button {
-    width: 40px;
-    height: 40px;
+    width: 34px;
+    height: 34px;
+    font-size: 1.4rem;
+  }
+
+  .secondary-button {
+    padding: 7px 10px;
+    font-size: .8rem;
   }
 
   .board {
-    padding: 10px;
-    border-radius: 13px;
+    padding: 7px;
+    border-radius: 11px;
   }
 
-  .hp-card {
-    min-height: 92px;
-    padding: 6px;
-  }
-
-  .hp-value {
-    min-height: 68px;
-    padding-bottom: 18px;
-  }
-
-  .slot-number {
-    min-width: 28px;
-    height: 27px;
-    padding: 5px 7px;
-    font-size: .74rem;
-  }
-
+  /* Monster A/B/C naast de tiles */
   .monster-group {
-    padding-bottom: 12px;
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    align-items: center;
+    gap: 5px;
+    padding-bottom: 8px;
   }
 
   .monster-group + .monster-group {
-    padding-top: 12px;
+    padding-top: 8px;
+  }
+
+  /* A/B/C */
+  .group-title {
+    margin: 0;
+    justify-content: center;
+  }
+
+  .group-title span {
+    width: 28px;
+    height: 28px;
+    font-size: .75rem;
+    border-radius: 6px;
+  }
+
+  /* 4 tiles per rij */
+  .hp-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .hp-card {
+    min-height: 54px;
+    height: 54px;
+    padding: 3px;
+    border-width: 2px;
+    border-radius: 6px;
+  }
+
+  .hp-value {
+    min-height: 0;
+    height: 100%;
+    padding: 4px 2px 14px;
+    font-size: .9rem;
+  }
+
+  .hp-value.empty {
+    font-size: .8rem;
+  }
+
+  .slot-number {
+    min-width: 18px;
+    height: 17px;
+    padding: 2px 4px;
+    border-width: 1px;
+    border-top-right-radius: 6px;
+    font-size: .55rem;
+  }
+
+  .hint {
+    margin-top: 7px;
+    font-size: .7rem;
   }
 }
