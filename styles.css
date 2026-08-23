@@ -32,6 +32,7 @@ input {
 #wakeLockButton {
   padding: 7px 8px;
   font-size: .75rem;
+  margin-right: 15px;
 }
 
 .secondary-button:disabled {
@@ -192,6 +193,7 @@ h1 {
   font-weight: 800;
   line-height: 1;
   white-space: nowrap;
+  margin-right: 15px;
 }
 
 .round-tracker:hover,
@@ -283,7 +285,9 @@ h1 {
   border: 0;
   cursor: pointer;
 }
-
+.add-button{
+      margin-right: 15px;
+}
 .primary-button,
 .secondary-button {
   padding: 10px 16px;
