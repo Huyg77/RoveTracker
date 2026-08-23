@@ -5,7 +5,7 @@ Een eenvoudige webapp voor het bijhouden van de actuele hitpoints van de monster
 ## Functies
 
 - Monster A, B en C worden standaard getoond
-- Met de `+`-knop kun je achtereenvolgens monster D, E en F toevoegen
+- Met de `M`-knop kun je achtereenvolgens monster D, E en F toevoegen
 - 8 velden per monster
 - Klik op een veld om hitpoints in te voeren
 - Klik later opnieuw om de hitpoints te wijzigen
