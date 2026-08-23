@@ -6,6 +6,8 @@
   <meta name="theme-color" content="#201b1a">
   <title>Rove — Hitpoint Tracker</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
 </head>
 <body>
   <main class="app">
@@ -15,6 +17,15 @@
         <h5>Hitpoint Tracker</h5>
       </div>
       <div class="topbar-actions">
+          <button
+    id="wakeLockButton"
+    class="secondary-button"
+    type="button"
+    aria-pressed="false"
+    title="Scherm wakker houden"
+  >
+    Scherm wakker
+  </button>
         <button id="addMonsterButton" class="add-button" type="button" aria-label="Volgend monster toevoegen" title="Volgend monster toevoegen">+</button>
         <button id="resetButton" class="secondary-button" type="button">Reset</button>
       </div>

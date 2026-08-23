@@ -29,6 +29,17 @@ input {
   font: inherit;
 }
 
+#wakeLockButton {
+  padding: 7px 8px;
+  font-size: .75rem;
+}
+
+.secondary-button:disabled {
+  cursor: default;
+  opacity: .45;
+}
+
+
 .app {
   width: min(100% - 28px, 920px);
   margin: 0 auto;

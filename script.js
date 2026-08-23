@@ -169,3 +169,96 @@ resetButton.addEventListener("click", () => {
 });
 
 render();
+
+// ------------------------------------------------------------
+// Screen Wake Lock
+// ------------------------------------------------------------
+
+const wakeLockButton = document.getElementById("wakeLockButton");
+
+let wakeLock = null;
+let wakeLockEnabled = false;
+
+async function requestWakeLock() {
+  if (!("wakeLock" in navigator)) {
+    wakeLockButton.disabled = true;
+    wakeLockButton.textContent = "Niet ondersteund";
+    return;
+  }
+
+  try {
+    wakeLock = await navigator.wakeLock.request("screen");
+    wakeLockEnabled = true;
+
+    wakeLockButton.textContent = "Scherm wakker ✓";
+    wakeLockButton.setAttribute("aria-pressed", "true");
+
+    wakeLock.addEventListener("release", () => {
+      wakeLock = null;
+
+      // Alleen de UI aanpassen wanneer de gebruiker Wake Lock
+      // niet bewust heeft uitgeschakeld.
+      if (wakeLockEnabled) {
+        wakeLockButton.textContent = "Scherm wakker";
+        wakeLockButton.setAttribute("aria-pressed", "false");
+      }
+    });
+  } catch (error) {
+    console.warn("Wake Lock kon niet worden ingeschakeld:", error);
+  }
+}
+
+async function releaseWakeLock() {
+  wakeLockEnabled = false;
+
+  if (wakeLock) {
+    await wakeLock.release();
+    wakeLock = null;
+  }
+
+  wakeLockButton.textContent = "Scherm wakker";
+  wakeLockButton.setAttribute("aria-pressed", "false");
+}
+
+wakeLockButton.addEventListener("click", async () => {
+  if (wakeLock) {
+    await releaseWakeLock();
+  } else {
+    wakeLockEnabled = true;
+    await requestWakeLock();
+  }
+});
+
+// De browser verbreekt de Wake Lock bijvoorbeeld wanneer de gebruiker
+// naar een andere app gaat of het scherm uitgaat.
+// Bij terugkeer vragen we hem opnieuw aan.
+document.addEventListener("visibilitychange", async () => {
+  if (
+    document.visibilityState === "visible" &&
+    wakeLockEnabled &&
+    !wakeLock
+  ) {
+    await requestWakeLock();
+  }
+});
+
+
+// ------------------------------------------------------------
+// Service Worker / offline PWA
+// ------------------------------------------------------------
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("./service-worker.js")
+      .then(() => {
+        console.log("Rove service worker geregistreerd.");
+      })
+      .catch((error) => {
+        console.error(
+          "Service worker kon niet worden geregistreerd:",
+          error
+        );
+      });
+  });
+}
