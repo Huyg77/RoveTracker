@@ -1,11 +1,17 @@
 const STORAGE_KEY = "rove-hitpoints-v1";
 const ACTIVE_MONSTERS_KEY = "rove-active-monsters-v1";
+const ROUND_KEY = "rove-current-round-v1";
 const DEFAULT_MONSTERS = ["A", "B", "C"];
 const OPTIONAL_MONSTERS = ["D", "E", "F"];
 
 const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
 let activeMonsters = JSON.parse(
   localStorage.getItem(ACTIVE_MONSTERS_KEY) || JSON.stringify(DEFAULT_MONSTERS)
+);
+
+let currentRound = Math.max(
+  1,
+  Number.parseInt(localStorage.getItem(ROUND_KEY) || "1", 10)
 );
 
 // Zorg ervoor dat bestaande/ongeldige opgeslagen instellingen nooit de basis A-C verwijderen.
@@ -23,6 +29,11 @@ const closeButton = document.getElementById("closeButton");
 const clearButton = document.getElementById("clearButton");
 const resetButton = document.getElementById("resetButton");
 const addMonsterButton = document.getElementById("addMonsterButton");
+const roundTrackerButton = document.getElementById("roundTrackerButton");
+const currentRoundElement = document.getElementById("currentRound");
+
+const roundDialog = document.getElementById("roundDialog");
+const roundDialogValue = document.getElementById("roundDialogValue");
 
 let selectedId = null;
 
@@ -32,6 +43,31 @@ function saveState() {
 
 function saveActiveMonsters() {
   localStorage.setItem(ACTIVE_MONSTERS_KEY, JSON.stringify(activeMonsters));
+}
+function saveRound() {
+  localStorage.setItem(ROUND_KEY, String(currentRound));
+}
+
+function updateRoundUI() {
+  currentRoundElement.textContent = currentRound;
+  roundDialogValue.textContent = currentRound;
+}
+
+function openRoundEditor() {
+  updateRoundUI();
+  roundDialog.showModal();
+}
+
+function closeRoundDialog() {
+  if (roundDialog.open) {
+    roundDialog.close();
+  }
+}
+
+function changeRound(amount) {
+  currentRound = Math.max(1, currentRound + amount);
+  saveRound();
+  updateRoundUI();
 }
 
 function createGroup(monster) {
@@ -148,6 +184,31 @@ clearButton.addEventListener("click", () => {
   closeDialog();
 });
 
+roundTrackerButton.addEventListener("click", openRoundEditor);
+
+roundMinusButton.addEventListener("click", () => {
+  changeRound(-1);
+});
+
+roundPlusButton.addEventListener("click", () => {
+  changeRound(1);
+});
+
+roundCloseButton.addEventListener("click", closeRoundDialog);
+
+roundDialog.addEventListener("click", (event) => {
+  if (event.target === roundDialog) {
+    closeRoundDialog();
+  }
+});
+
+roundDialog.addEventListener("close", () => {
+  roundTrackerButton.setAttribute("aria-expanded", "false");
+});
+
+roundTrackerButton.addEventListener("click", () => {
+  roundTrackerButton.setAttribute("aria-expanded", "true");
+});
 closeButton.addEventListener("click", closeDialog);
 
 dialog.addEventListener("click", (event) => {
@@ -169,6 +230,7 @@ resetButton.addEventListener("click", () => {
 });
 
 render();
+updateRoundUI();
 
 // ------------------------------------------------------------
 // Screen Wake Lock
