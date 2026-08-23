@@ -26,7 +26,17 @@
   >
     Scherm wakker
   </button>
-        <button id="addMonsterButton" class="add-button" type="button" aria-label="Volgend monster toevoegen" title="Volgend monster toevoegen">+</button>
+        <button
+  id="roundTrackerButton"
+  class="round-tracker"
+  type="button"
+  aria-label="Huidige ronde wijzigen"
+  aria-expanded="false"
+  title="Huidige ronde wijzigen"
+>
+  R<span id="currentRound">1</span>
+</button>
+        <button id="addMonsterButton" class="add-button" type="button" aria-label="Volgend monster toevoegen" title="Volgend monster toevoegen">+M</button>
         <button id="resetButton" class="secondary-button" type="button">Reset</button>
       </div>
     </header>
