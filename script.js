@@ -29,11 +29,15 @@ const closeButton = document.getElementById("closeButton");
 const clearButton = document.getElementById("clearButton");
 const resetButton = document.getElementById("resetButton");
 const addMonsterButton = document.getElementById("addMonsterButton");
+
 const roundTrackerButton = document.getElementById("roundTrackerButton");
 const currentRoundElement = document.getElementById("currentRound");
 
 const roundDialog = document.getElementById("roundDialog");
 const roundDialogValue = document.getElementById("roundDialogValue");
+const roundMinusButton = document.getElementById("roundMinusButton");
+const roundPlusButton = document.getElementById("roundPlusButton");
+const roundCloseButton = document.getElementById("roundCloseButton");
 
 let selectedId = null;
 
