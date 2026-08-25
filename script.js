@@ -41,17 +41,13 @@ const roundCloseButton = document.getElementById("roundCloseButton");
 
 const TURN_STATE_KEY = "rove-turn-state-v1";
 
-const turnState =
-
-JSON.parse(localStorage.getItem(TURN_STATE_KEY)) || {
-
+const turnState = JSON.parse(localStorage.getItem(TURN_STATE_KEY)) || {
 heroes: {
 1: false,
 2: false,
 3: false
 },
 monsters: {}
-
 };
 
 let selectedId = null;
@@ -106,10 +102,9 @@ function renderHeroTurns() {
 document
 .querySelectorAll(".hero-turn")
 .forEach((button) => {
-const hero = button.dataset.hero;
- 
+const hero = button.dataset.hero; 
 button.classList.toggle(
-"used",
+  "used",
 turnState.heroes[hero]
 );
 });
