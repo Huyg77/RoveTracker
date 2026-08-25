@@ -99,16 +99,25 @@ resetTurnStatus();
 }
 
 function renderHeroTurns() {
-document
-.querySelectorAll(".hero-turn")
-.forEach((button) => {
-const hero = button.dataset.hero; 
-button.classList.toggle(
-  "used",
-turnState.heroes[hero]
-);
-});
+  document.querySelectorAll(".hero-turn").forEach((button) => {
+    const hero = button.dataset.hero;
+    const isUsed = turnState.heroes[hero] === true;
+
+    button.classList.toggle("used", isUsed);
+    button.setAttribute("aria-pressed", String(isUsed));
+  });
 }
+
+document.querySelectorAll(".hero-turn").forEach((button) => {
+  button.addEventListener("click", () => {
+    const hero = button.dataset.hero;
+
+    turnState.heroes[hero] = !turnState.heroes[hero];
+
+    saveTurnState();
+    renderHeroTurns();
+  });
+});
 
 function createGroup(monster) {
   const group = document.createElement("section");
@@ -117,23 +126,22 @@ function createGroup(monster) {
  const title = document.createElement("button");
 title.type = "button";
 title.className = "group-title"; 
-title.innerHTML = `<span>${monster}</span>`;
+title.setAttribute("aria-pressed", "false");
 
   // Status uit opgeslagen data toepassen
 if (turnState.monsters[monster]) {
 title.classList.add("used");
 }
 
-  title.addEventListener("click", () => {
-turnState.monsters[monster] =
-!turnState.monsters[monster];
- 
-saveTurnState();
- 
-title.classList.toggle(
-"used",
-turnState.monsters[monster]
-);
+title.addEventListener("click", () => {
+  turnState.monsters[monster] = !turnState.monsters[monster];
+
+  saveTurnState();
+
+  const isUsed = turnState.monsters[monster] === true;
+
+  title.classList.toggle("used", isUsed);
+  title.setAttribute("aria-pressed", String(isUsed));
 });
 
   const grid = document.createElement("div");
