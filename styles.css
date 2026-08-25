@@ -556,4 +556,13 @@ dialog::backdrop {
     margin-top: 7px;
     font-size: .7rem;
   }
+
+  .hero-turn {
+  background: lime !important;
+  color: black !important;
+}
+
+.hero-turn.used {
+  background: orange !important;
+}
 }
