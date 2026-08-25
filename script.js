@@ -39,7 +39,30 @@ const roundMinusButton = document.getElementById("roundMinusButton");
 const roundPlusButton = document.getElementById("roundPlusButton");
 const roundCloseButton = document.getElementById("roundCloseButton");
 
+const TURN_STATE_KEY = "rove-turn-state-v1";
+
+const turnState =
+
+JSON.parse(localStorage.getItem(TURN_STATE_KEY)) || {
+
+heroes: {
+1: false,
+2: false,
+3: false
+},
+monsters: {}
+
+};
+
 let selectedId = null;
+
+function saveTurnState() {
+localStorage.setItem(
+TURN_STATE_KEY,
+JSON.stringify(turnState)
+);
+
+}
 
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
