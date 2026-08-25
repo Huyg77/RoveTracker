@@ -146,8 +146,8 @@ h1 {
 .counter-symbol {
   position: relative;
   display: inline-block;
-  width: 16px;
-  height: 21px;
+  width: 18px;
+  height: 23px;
   color: currentColor;
 }
 
@@ -157,16 +157,16 @@ h1 {
   top: 0;
   left: 1px;
 
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 15px;
 
   background: currentColor;
 
   clip-path: polygon(
     0 0,
     100% 0,
-    72% 100%,
-    28% 100%
+    68% 100%,
+    32% 100%
   );
 }
 
@@ -176,8 +176,8 @@ h1 {
   left: 5px;
   bottom: 0;
 
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 7px;
 
   border-radius: 50%;
   background: currentColor;
