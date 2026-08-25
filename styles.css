@@ -574,3 +574,28 @@ dialog::backdrop {
 .group-title.used span {
   background: orange !important;
 }
+
+.hero-turn {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0 !important;
+  background-color: #3f9b48 !important;
+  color: white !important;
+}
+
+.hero-turn.used {
+  background-color: #d48a27 !important;
+}
+
+.group-title {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.group-title span {
+  background-color: #8e211d !important;
+}
+
+.group-title.used span {
+  background-color: #d48a27 !important;
+}
