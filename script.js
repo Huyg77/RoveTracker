@@ -92,18 +92,54 @@ function closeRoundDialog() {
 }
 
 function changeRound(amount) {
-  currentRound = Math.max(1, currentRound + amount);
-  saveRound();
-  updateRoundUI();
+currentRound = Math.max(
+1,
+currentRound + amount
+);
+ 
+saveRound();
+updateRoundUI(); 
+resetTurnStatus();
+}
+
+function renderHeroTurns() {
+document
+.querySelectorAll(".hero-turn")
+.forEach((button) => {
+const hero = button.dataset.hero;
+ 
+button.classList.toggle(
+"used",
+turnState.heroes[hero]
+);
+});
 }
 
 function createGroup(monster) {
   const group = document.createElement("section");
   group.className = "monster-group";
 
-  const title = document.createElement("h2");
-  title.className = "group-title";
-  title.innerHTML = `<span>${monster}</span>`;
+ const title = document.createElement("button");
+title.type = "button";
+title.className = "group-title"; 
+title.innerHTML = `<span>${monster}</span>`;
+
+  // Status uit opgeslagen data toepassen
+if (turnState.monsters[monster]) {
+title.classList.add("used");
+}
+
+  title.addEventListener("click", () => {
+turnState.monsters[monster] =
+!turnState.monsters[monster];
+ 
+saveTurnState();
+ 
+title.classList.toggle(
+"used",
+turnState.monsters[monster]
+);
+});
 
   const grid = document.createElement("div");
   grid.className = "hp-grid";
@@ -129,6 +165,21 @@ function createGroup(monster) {
 
   group.append(title, grid);
   return group;
+}
+
+function resetTurnStatus() {
+turnState.heroes = {
+1: false,
+2: false,
+3: false
+};
+ 
+turnState.monsters = {};
+ 
+saveTurnState();
+ 
+render();
+renderHeroTurns();
 }
 
 function updateAddButton() {
@@ -257,6 +308,7 @@ resetButton.addEventListener("click", () => {
 });
 
 render();
+renderHeroTurns();
 updateRoundUI();
 
 // ------------------------------------------------------------
@@ -329,6 +381,20 @@ document.addEventListener("visibilitychange", async () => {
   ) {
     await requestWakeLock();
   }
+});
+
+document
+.querySelectorAll(".hero-turn")
+.forEach((button) => {
+button.addEventListener("click", () => {
+const hero = button.dataset.hero;
+ 
+turnState.heroes[hero] =
+!turnState.heroes[hero];
+ 
+saveTurnState();
+renderHeroTurns();
+});
 });
 
 
