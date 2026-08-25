@@ -1,3 +1,4 @@
+console.log("SCRIPT VERSIE TEST 123");
 const STORAGE_KEY = "rove-hitpoints-v1";
 const ACTIVE_MONSTERS_KEY = "rove-active-monsters-v1";
 const ROUND_KEY = "rove-current-round-v1";
