@@ -62,8 +62,27 @@ const turnState = JSON.parse(
     2: false,
     3: false
   },
+  counters: {
+    1: false,
+    2: false,
+    3: false
+  },
   monsters: {}
 };
+
+turnState.heroes ||= {
+  1: false,
+  2: false,
+  3: false
+};
+
+turnState.counters ||= {
+  1: false,
+  2: false,
+  3: false
+};
+
+turnState.monsters ||= {};
 
 let selectedId = null;
 
@@ -150,6 +169,36 @@ function renderHeroTurns() {
       );
     });
 }
+
+function renderHeroCounters() {
+  document
+    .querySelectorAll(".hero-counter")
+    .forEach((button) => {
+      const counter = button.dataset.counter;
+      const isUsed = turnState.counters[counter] === true;
+
+      button.classList.toggle("used", isUsed);
+
+      button.setAttribute(
+        "aria-pressed",
+        String(isUsed)
+      );
+    });
+}
+
+document
+  .querySelectorAll(".hero-counter")
+  .forEach((button) => {
+    button.addEventListener("click", () => {
+      const counter = button.dataset.counter;
+
+      turnState.counters[counter] =
+        !turnState.counters[counter];
+
+      saveTurnState();
+      renderHeroCounters();
+    });
+  });
 
 // ÉÉN hero click listener.
 // Let op: er staat verderop GEEN tweede hero listener meer.
@@ -266,12 +315,19 @@ function resetTurnStatus() {
     3: false
   };
 
+  turnState.counters = {
+    1: false,
+    2: false,
+    3: false
+  };
+
   turnState.monsters = {};
 
   saveTurnState();
 
   render();
   renderHeroTurns();
+  renderHeroCounters();
 }
 
 // ------------------------------------------------------------
@@ -494,6 +550,7 @@ resetButton.addEventListener(
 
 render();
 renderHeroTurns();
+renderHeroCounters();
 updateRoundUI();
 
 // ------------------------------------------------------------
