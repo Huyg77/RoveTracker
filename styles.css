@@ -117,12 +117,11 @@ h1 {
   margin-bottom: 10px;
 }
 
-.hero-turn {
+.hero-turn, .hero-counter {
   height: 28px;
   padding: 0;
   border: 0;
-  border-radius: 8px;
-  background: var(--green);
+  border-radius: 8px; 
   color: white;
   font-weight: 700;
   cursor: pointer;
@@ -136,26 +135,42 @@ h1 {
     opacity .12s ease;
 }
 
+.hero-turn{
+   background: var(--green);}
+
+.hero-counter{
+   background: var(--blue);
+}
+
 /* Hero is used */
-.hero-turn.used {
+.hero-turn.used, .hero-counter.used {
   background: var(--used-bg);
   color: var(--used-text);
 }
 
 /* Keep used buttons clickable so they can be toggled back */
 .hero-turn.used:hover,
-.hero-turn.used:focus-visible {
+.hero-turn.used:focus-visible,
+.hero-counter.used:hover,
+.hero-counter.used:focus-visible {{
   background: var(--used-border);
 }
 
 .hero-turn:hover,
-.hero-turn:focus-visible {
+.hero-turn:focus-visible,
+.hero-counter:hover,
+.hero-counter:focus-visible{
   filter: brightness(1.1);
   outline: none;
 }
 
-.hero-turn:active {
+.hero-turn:active,
+.hero-counter:active{
   transform: translateY(1px);
+}
+
+.counter-bar {
+  margin-bottom: 22px;
 }
 
 /* ------------------------------------------------------------
