@@ -9,10 +9,20 @@
   --border: #6d5751;
   --red: #8e211d;
   --red-dark: #581714;
+  --green: #3f9b48;
   --cream: #eee6dc;
   --muted: #b9aaa0;
   --white: #fff;
+
+  /* Used / disabled appearance */
+  --used-bg: #66615e;
+  --used-border: #85807c;
+  --used-text: #d2cfcc;
 }
+
+/* ------------------------------------------------------------
+   Base
+   ------------------------------------------------------------ */
 
 body {
   margin: 0;
@@ -29,17 +39,9 @@ input {
   font: inherit;
 }
 
-#wakeLockButton {
-  padding: 7px 8px;
-  font-size: .75rem;
-  margin-right: 15px;
-}
-
-.secondary-button:disabled {
-  cursor: default;
-  opacity: .45;
-}
-
+/* ------------------------------------------------------------
+   App / Header
+   ------------------------------------------------------------ */
 
 .app {
   width: min(100% - 28px, 920px);
@@ -75,13 +77,90 @@ h1 {
   letter-spacing: -.03em;
 }
 
+/* ------------------------------------------------------------
+   Wake lock
+   ------------------------------------------------------------ */
+
+#wakeLockButton {
+  padding: 7px 8px;
+  margin-right: 15px;
+  font-size: .75rem;
+}
+
+.secondary-button:disabled {
+  cursor: default;
+  opacity: .45;
+}
+
+/* ------------------------------------------------------------
+   Board
+   ------------------------------------------------------------ */
+
 .board {
   padding: clamp(12px, 2.5vw, 22px);
   border: 1px solid #4d403c;
   border-radius: 18px;
   background: linear-gradient(145deg, #312927, #211c1b);
-  box-shadow: 0 18px 50px rgba(0,0,0,.35), inset 0 1px rgba(255,255,255,.04);
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, .35),
+    inset 0 1px rgba(255, 255, 255, .04);
 }
+
+/* ------------------------------------------------------------
+   Hero turn buttons
+   ------------------------------------------------------------ */
+
+.hero-turn-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.hero-turn {
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: var(--green);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  transition:
+    background-color .12s ease,
+    color .12s ease,
+    opacity .12s ease;
+}
+
+/* Hero is used */
+.hero-turn.used {
+  background: var(--used-bg);
+  color: var(--used-text);
+}
+
+/* Keep used buttons clickable so they can be toggled back */
+.hero-turn.used:hover,
+.hero-turn.used:focus-visible {
+  background: var(--used-border);
+}
+
+.hero-turn:hover,
+.hero-turn:focus-visible {
+  filter: brightness(1.1);
+  outline: none;
+}
+
+.hero-turn:active {
+  transform: translateY(1px);
+}
+
+/* ------------------------------------------------------------
+   Monster groups
+   ------------------------------------------------------------ */
 
 .monster-group {
   padding: 0 0 18px;
@@ -97,20 +176,59 @@ h1 {
   align-items: center;
   gap: 9px;
   margin: 0 0 10px 2px;
+  padding: 0;
+
+  border: none;
+  background: transparent;
+
   font-size: 1rem;
   letter-spacing: .12em;
+
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .group-title span {
   display: inline-grid;
   place-items: center;
+
   width: 30px;
   height: 30px;
+
   border-radius: 6px;
+
   background: var(--red);
   color: var(--white);
+
   box-shadow: inset 0 0 0 1px #b04a44;
+
+  transition:
+    background-color .12s ease,
+    color .12s ease;
 }
+
+/* Monster is used */
+.group-title.used span {
+  background: var(--used-bg);
+  color: var(--used-text);
+  box-shadow: inset 0 0 0 1px var(--used-border);
+}
+
+.group-title.used:hover span,
+.group-title.used:focus-visible span {
+  background: var(--used-border);
+}
+
+.group-title:hover span,
+.group-title:focus-visible span {
+  filter: brightness(1.1);
+  outline: none;
+}
+
+/* ------------------------------------------------------------
+   HP cards
+   ------------------------------------------------------------ */
 
 .hp-grid {
   display: grid;
@@ -120,16 +238,24 @@ h1 {
 
 .hp-card {
   position: relative;
+
   min-height: 116px;
   padding: 10px;
+
   border: 3px solid var(--red);
   border-radius: 10px;
+
   background: #0f0d0c;
   color: var(--cream);
+
   cursor: pointer;
   text-align: left;
   overflow: hidden;
-  transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+
+  transition:
+    transform .12s ease,
+    border-color .12s ease,
+    box-shadow .12s ease;
 }
 
 .hp-card:hover,
@@ -137,46 +263,21 @@ h1 {
   transform: translateY(-2px);
   border-color: #c14b44;
   outline: none;
-  box-shadow: 0 8px 18px rgba(0,0,0,.25);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .25);
 }
 
 .hp-card:active {
   transform: translateY(0);
 }
 
-.group-title {
-cursor: pointer;
-border: none;
-background: transparent;
-padding: 0;
-}
- 
-.group-title.used span {
-background: #d48a27;
-}
-
-.slot-number {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  min-width: 34px;
-  height: 32px;
-  padding: 7px 9px;
-  border-top: 2px solid #d8cfc7;
-  border-right: 2px solid #d8cfc7;
-  border-top-right-radius: 13px;
-  background: var(--red-dark);
-  color: white;
-  font-weight: 800;
-  font-size: .82rem;
-}
-
 .hp-value {
   display: grid;
   place-items: center;
+
   height: 100%;
   min-height: 90px;
   padding: 10px 4px 22px;
+
   font-size: clamp(1.4rem, 5vw, 2rem);
   font-weight: 800;
 }
@@ -187,28 +288,24 @@ background: #d48a27;
   font-weight: 500;
 }
 
-/* ------------------------------------------------------------
-   Hero turn
-   ------------------------------------------------------------ */
-.hero-turn-bar {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 6px;
-margin-bottom: 10px;
-}
+.slot-number {
+  position: absolute;
+  left: 0;
+  bottom: 0;
 
-.hero-turn {
-height: 28px;
-border: none;
-border-radius: 8px;
-font-weight: 700;
-cursor: pointer;
-background: #3f9b48;
-color: white;
-}
+  min-width: 34px;
+  height: 32px;
+  padding: 7px 9px;
 
-.hero-turn.used {
-background: #d48a27;
+  border-top: 2px solid #d8cfc7;
+  border-right: 2px solid #d8cfc7;
+  border-top-right-radius: 13px;
+
+  background: var(--red-dark);
+  color: white;
+
+  font-weight: 800;
+  font-size: .82rem;
 }
 
 /* ------------------------------------------------------------
@@ -219,18 +316,21 @@ background: #d48a27;
   min-width: 40px;
   height: 34px;
   padding: 0 8px;
-  border: 1px solid #6b5650;
+
+  border: 1px solid #9fa39a;
   border-radius: 9px;
+
   background: #e6f332ba;
   color: #040404;
-  border: 1px solid #9fa39a;
+
   cursor: pointer;
+
   font-size: .78rem;
   font-weight: 800;
   line-height: 1;
   white-space: nowrap;
+
   margin-right: 15px;
-  
 }
 
 .round-tracker:hover,
@@ -243,6 +343,10 @@ background: #d48a27;
 .round-tracker:active {
   transform: translateY(1px);
 }
+
+/* ------------------------------------------------------------
+   Round modal
+   ------------------------------------------------------------ */
 
 .round-modal {
   position: relative;
@@ -271,11 +375,15 @@ background: #d48a27;
   width: 48px;
   height: 48px;
   padding: 0;
+
   border: 1px solid #6d5751;
   border-radius: 10px;
+
   background: #403532;
   color: var(--cream);
+
   cursor: pointer;
+
   font-size: 1.7rem;
   font-weight: 500;
   line-height: 1;
@@ -292,28 +400,9 @@ background: #d48a27;
   transform: scale(.96);
 }
 
-@media (max-width: 560px) {
-  .round-tracker {
-    min-width: 36px;
-    height: 34px;
-    padding: 0 7px;
-    font-size: .72rem;
-  }
-
-  .round-modal {
-    padding: 22px 22px 24px;
-  }
-
-  .round-controls {
-    grid-template-columns: 46px minmax(55px, 1fr) 46px;
-    gap: 9px;
-  }
-
-  .round-adjust-button {
-    width: 46px;
-    height: 46px;
-  }
-}
+/* ------------------------------------------------------------
+   General buttons
+   ------------------------------------------------------------ */
 
 .primary-button,
 .secondary-button,
@@ -322,9 +411,7 @@ background: #d48a27;
   border: 0;
   cursor: pointer;
 }
-.add-button{
-      margin-right: 15px;
-}
+
 .primary-button,
 .secondary-button {
   padding: 10px 16px;
@@ -351,13 +438,22 @@ background: #d48a27;
   background: #51423d;
 }
 
+/* ------------------------------------------------------------
+   Add monster
+   ------------------------------------------------------------ */
+
 .add-button {
   width: 42px;
   height: 42px;
+
+  margin-right: 15px;
+
   border-radius: 9px;
+  border: 1px solid #b04a44;
+
   background: var(--red);
   color: white;
-  border: 1px solid #b04a44;
+
   font-size: 1.7rem;
   font-weight: 500;
   line-height: 1;
@@ -372,18 +468,25 @@ background: #d48a27;
   opacity: .35;
 }
 
+/* ------------------------------------------------------------
+   Dialogs
+   ------------------------------------------------------------ */
+
 dialog {
   width: min(420px, calc(100% - 28px));
   padding: 0;
+
   border: 1px solid #6b5650;
   border-radius: 16px;
+
   color: var(--cream);
   background: #251f1d;
-  box-shadow: 0 24px 80px rgba(0,0,0,.65);
+
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .65);
 }
 
 dialog::backdrop {
-  background: rgba(0,0,0,.68);
+  background: rgba(0, 0, 0, .68);
   backdrop-filter: blur(2px);
 }
 
@@ -400,7 +503,9 @@ dialog::backdrop {
 .modal label {
   display: block;
   margin-bottom: 8px;
+
   color: #d7c9c0;
+
   font-size: .9rem;
   font-weight: 650;
 }
@@ -408,17 +513,20 @@ dialog::backdrop {
 .modal input {
   width: 100%;
   padding: 13px 14px;
+
   border: 1px solid #6b5750;
   border-radius: 9px;
   outline: none;
+
   background: #120f0e;
   color: white;
+
   font-size: 1.2rem;
 }
 
 .modal input:focus {
   border-color: #b54841;
-  box-shadow: 0 0 0 3px rgba(181,72,65,.18);
+  box-shadow: 0 0 0 3px rgba(181, 72, 65, .18);
 }
 
 .modal-actions {
@@ -432,11 +540,15 @@ dialog::backdrop {
   position: absolute;
   top: 12px;
   right: 13px;
+
   width: 34px;
   height: 34px;
+
   border-radius: 50%;
+
   background: transparent;
   color: #bcaea6;
+
   font-size: 1.7rem;
   line-height: 1;
 }
@@ -446,14 +558,25 @@ dialog::backdrop {
   color: white;
 }
 
+/* ------------------------------------------------------------
+   Hint
+   ------------------------------------------------------------ */
+
 .hint {
   margin: 15px 2px 0;
+
   color: var(--muted);
+
   text-align: center;
   font-size: .9rem;
 }
 
+/* ------------------------------------------------------------
+   Mobile
+   ------------------------------------------------------------ */
+
 @media (max-width: 560px) {
+
   .app {
     width: calc(100% - 10px);
     padding-top: 10px;
@@ -487,6 +610,27 @@ dialog::backdrop {
     font-size: .8rem;
   }
 
+  .round-tracker {
+    min-width: 36px;
+    height: 34px;
+    padding: 0 7px;
+    font-size: .72rem;
+  }
+
+  .round-modal {
+    padding: 22px 22px 24px;
+  }
+
+  .round-controls {
+    grid-template-columns: 46px minmax(55px, 1fr) 46px;
+    gap: 9px;
+  }
+
+  .round-adjust-button {
+    width: 46px;
+    height: 46px;
+  }
+
   .board {
     padding: 7px;
     border-radius: 11px;
@@ -505,7 +649,6 @@ dialog::backdrop {
     padding-top: 8px;
   }
 
-  /* A/B/C */
   .group-title {
     margin: 0;
     justify-content: center;
@@ -528,6 +671,7 @@ dialog::backdrop {
     min-height: 54px;
     height: 54px;
     padding: 3px;
+
     border-width: 2px;
     border-radius: 6px;
   }
@@ -547,55 +691,19 @@ dialog::backdrop {
     min-width: 18px;
     height: 17px;
     padding: 2px 4px;
+
     border-width: 1px;
     border-top-right-radius: 6px;
+
     font-size: .55rem;
+  }
+
+  .hero-turn {
+    height: 28px;
   }
 
   .hint {
     margin-top: 7px;
     font-size: .7rem;
   }
-}
-/* DEBUG */
-.hero-turn {
-  background: lime !important;
-  color: black !important;
-}
-
-.hero-turn.used {
-  background: orange !important;
-}
-
-.group-title span {
-  background: blue !important;
-}
-
-.group-title.used span {
-  background: orange !important;
-}
-
-.hero-turn {
-  appearance: none;
-  -webkit-appearance: none;
-  border: 0 !important;
-  background-color: #3f9b48 !important;
-  color: white !important;
-}
-
-.hero-turn.used {
-  background-color: #d48a27 !important;
-}
-
-.group-title {
-  appearance: none;
-  -webkit-appearance: none;
-}
-
-.group-title span {
-  background-color: #8e211d !important;
-}
-
-.group-title.used span {
-  background-color: #d48a27 !important;
 }
