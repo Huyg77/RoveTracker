@@ -147,18 +147,18 @@ h1 {
   position: relative;
   display: inline-block;
   width: 18px;
-  height: 23px;
+  height: 21px;
   color: currentColor;
 }
 
 .counter-symbol::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 1px;
+  top: 2px;
+  left: 2px;
 
-  width: 16px;
-  height: 15px;
+  width: 14px;
+  height: 13px;
 
   background: currentColor;
 
