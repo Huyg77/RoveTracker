@@ -109,16 +109,24 @@ function renderHeroTurns() {
   });
 }
 
-document.querySelectorAll(".hero-turn").forEach((button) => {
-  button.addEventListener("click", () => {
-    const hero = button.dataset.hero;
+document
+  .querySelectorAll(".hero-turn")
+  .forEach((button) => {
+    console.log("Listener gekoppeld aan:", button.dataset.hero);
 
-    turnState.heroes[hero] = !turnState.heroes[hero];
+    button.addEventListener("click", () => {
+      console.log("HERO GEKLIKT:", button.dataset.hero);
 
-    saveTurnState();
-    renderHeroTurns();
+      const hero = button.dataset.hero;
+
+      turnState.heroes[hero] = !turnState.heroes[hero];
+
+      console.log("Nieuwe state:", turnState.heroes);
+
+      saveTurnState();
+      renderHeroTurns();
+    });
   });
-});
 
 function createGroup(monster) {
   const group = document.createElement("section");
