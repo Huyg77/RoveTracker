@@ -700,7 +700,7 @@ dialog::backdrop {
   }
 
   .hp-value.empty {
-    font-size: .8rem;
+    font-size: 1.5rem;
   }
 
   .slot-number {
