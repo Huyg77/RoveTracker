@@ -146,8 +146,9 @@ h1 {
 .counter-symbol {
   position: relative;
   display: inline-block;
-  width: 14px;
-  height: 20px;
+  width: 16px;
+  height: 21px;
+  color: currentColor;
 }
 
 .counter-symbol::before {
@@ -155,24 +156,29 @@ h1 {
   position: absolute;
   top: 0;
   left: 1px;
-  width: 12px;
+
+  width: 14px;
   height: 14px;
+
   background: currentColor;
+
   clip-path: polygon(
     0 0,
     100% 0,
-    78% 100%,
-    22% 100%
+    72% 100%,
+    28% 100%
   );
 }
 
 .counter-symbol::after {
   content: "";
   position: absolute;
-  left: 4px;
+  left: 5px;
   bottom: 0;
-  width: 7px;
-  height: 5px;
+
+  width: 6px;
+  height: 6px;
+
   border-radius: 50%;
   background: currentColor;
 }
