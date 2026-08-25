@@ -143,6 +143,40 @@ h1 {
    background: var(--blue);
 }
 
+.counter-symbol {
+  position: relative;
+  display: inline-block;
+  width: 14px;
+  height: 20px;
+}
+
+.counter-symbol::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 1px;
+  width: 12px;
+  height: 14px;
+  background: currentColor;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    78% 100%,
+    22% 100%
+  );
+}
+
+.counter-symbol::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  bottom: 0;
+  width: 7px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
 /* Hero is used */
 .hero-turn.used, .hero-counter.used {
   background: var(--used-bg);
