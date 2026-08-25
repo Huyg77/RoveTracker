@@ -100,12 +100,27 @@ resetTurnStatus();
 }
 
 function renderHeroTurns() {
+  console.log("RENDER HERO TURNS", turnState.heroes);
+
   document.querySelectorAll(".hero-turn").forEach((button) => {
     const hero = button.dataset.hero;
     const isUsed = turnState.heroes[hero] === true;
 
+    console.log(
+      "Hero:",
+      hero,
+      "isUsed:",
+      isUsed,
+      "voor class:",
+      button.className
+    );
+
     button.classList.toggle("used", isUsed);
-    button.setAttribute("aria-pressed", String(isUsed));
+
+    console.log(
+      "na class:",
+      button.className
+    );
   });
 }
 
