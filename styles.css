@@ -107,6 +107,81 @@ h1 {
     inset 0 1px rgba(255, 255, 255, .04);
 }
 
+
+/* ------------------------------------------------------------
+   History buttons
+   ------------------------------------------------------------ */
+
+.hp-adjustments {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.hp-adjust-button {
+  min-height: 3rem;
+  border: 0;
+  border-radius: 0.75rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.hp-adjust-button.damage {
+  background: #3a2927;
+  color: #ffb4a8;
+}
+
+.hp-adjust-button.heal {
+  background: #25372b;
+  color: #a8e6b5;
+}
+
+.hp-adjust-button:active {
+  transform: scale(0.96);
+}
+
+.hp-history {
+  margin-top: 1.25rem;
+}
+
+.hp-history-header {
+  margin-bottom: 0.5rem;
+}
+
+.hp-history-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.hp-history-list span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  min-height: 2rem;
+  padding: 0 0.5rem;
+  border-radius: 0.5rem;
+  background: #2a2524;
+}
+
+.hp-history-empty {
+  color: #888;
+}
+
+.history-actions {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.history-actions button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+
 /* ------------------------------------------------------------
    Hero turn buttons
    ------------------------------------------------------------ */
