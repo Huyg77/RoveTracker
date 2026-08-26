@@ -54,17 +54,23 @@ input {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.6rem;
+  gap: 0.5rem;
   width: 100%;
   box-sizing: border-box;
 }
 
 .topbar-actions {
-  display: grid;
-  grid-template-columns: 2.5rem 2.5rem minmax(0, 1fr) 2.75rem 2.75rem 4rem;
+  display: flex;
   align-items: center;
   gap: 0.4rem;
   width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.topbar-actions > button {
+  flex-shrink: 1;
+  min-width: 0;
   box-sizing: border-box;
 }
 
@@ -104,14 +110,20 @@ h1 {
   opacity: 0.65;
 }
 
+#undoButton,
+#redoButton,
+#roundTrackerButton,
+#addMonsterButton {
+  flex: 0 0 auto;
+}
+
 /* ------------------------------------------------------------
    Wake lock
    ------------------------------------------------------------ */
 
 #wakeLockButton {
-  padding: 7px 8px;
-  margin-right: 15px;
-  font-size: .75rem;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .secondary-button:disabled {
@@ -199,7 +211,9 @@ h1 {
 
 .history-actions {
   display: flex;
-  gap: 0.35rem;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
 }
 
 .history-actions button:disabled {
