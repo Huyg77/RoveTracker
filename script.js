@@ -417,8 +417,24 @@ function addNextMonster() {
 
   activeMonsters.push(nextMonster);
 
+  // Voeg monster toevoegen toe aan undo/redo history.
+  actionHistory.splice(
+    historyIndex + 1
+  );
+
+  actionHistory.push({
+    type: "addMonster",
+    monster: nextMonster
+  });
+
+  historyIndex =
+    actionHistory.length - 1;
+
+  saveActionHistory();
+
   saveActiveMonsters();
   render();
+  updateHistoryButtons();
 }
 
 // ------------------------------------------------------------
@@ -438,19 +454,32 @@ function undo() {
   const action =
     actionHistory[historyIndex];
 
-  if (
-    action.oldValue === undefined ||
-    action.oldValue === null
-  ) {
-    delete state[action.id];
+  if (action.type === "addMonster") {
+    const index =
+      activeMonsters.indexOf(action.monster);
+
+    if (index !== -1) {
+      activeMonsters.splice(index, 1);
+    }
+
+    saveActiveMonsters();
   } else {
-    state[action.id] =
-      action.oldValue;
+    // Oude HP-actie
+    if (
+      action.oldValue === undefined ||
+      action.oldValue === null
+    ) {
+      delete state[action.id];
+    } else {
+      state[action.id] =
+        action.oldValue;
+    }
+
+    saveState();
   }
 
   historyIndex--;
 
-  saveState();
   saveActionHistory();
 
   render();
@@ -477,14 +506,30 @@ function redo() {
   const action =
     actionHistory[historyIndex];
 
-  if (action.newValue === null) {
-    delete state[action.id];
+  if (action.type === "addMonster") {
+    if (
+      !activeMonsters.includes(
+        action.monster
+      )
+    ) {
+      activeMonsters.push(
+        action.monster
+      );
+    }
+
+    saveActiveMonsters();
   } else {
-    state[action.id] =
-      action.newValue;
+    // Oude HP-actie
+    if (action.newValue === null) {
+      delete state[action.id];
+    } else {
+      state[action.id] =
+        action.newValue;
+    }
+
+    saveState();
   }
 
-  saveState();
   saveActionHistory();
 
   render();
@@ -579,6 +624,7 @@ function setHitpoints(id, newValue, recordHistory = true) {
     );
 
     actionHistory.push({
+      type: "hp",
       id,
       oldValue,
       newValue
