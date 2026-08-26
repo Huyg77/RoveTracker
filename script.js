@@ -1165,7 +1165,7 @@ async function requestWakeLock() {
     wakeLockEnabled = true;
 
     wakeLockButton.textContent =
-      "Scherm wakker ✓";
+      "WakeLock ✓";
 
     wakeLockButton.setAttribute(
       "aria-pressed",
@@ -1179,7 +1179,7 @@ async function requestWakeLock() {
 
         if (wakeLockEnabled) {
           wakeLockButton.textContent =
-            "Scherm wakker";
+            "WakeLock";
 
           wakeLockButton.setAttribute(
             "aria-pressed",
