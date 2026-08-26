@@ -469,9 +469,6 @@ function renderHpHistory(id) {
 // Hitpoint editor
 // ------------------------------------------------------------
 
-const hpValueDisplay = document.getElementById("hpValueDisplay");
-const saveButton = document.getElementById("saveButton");
-
 let tempValue = null; // null = leeg, getal = tijdelijke waarde
 
 function updateValueDisplay() {
