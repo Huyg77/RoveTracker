@@ -441,92 +441,81 @@ function addNextMonster() {
 // Hitpoint editor
 // ------------------------------------------------------------
 
-function updateHistoryButtons() {
-  undoButton.disabled =
-    historyIndex < 0;
+const hpValueDisplay = document.getElementById("hpValueDisplay");
+const saveButton = document.getElementById("saveButton");
+const hpStepButtons = document.querySelectorAll(".hp-step-button");
 
-  redoButton.disabled =
-    historyIndex >= actionHistory.length - 1;
+let tempValue = null;   // null = leeg, getal = tijdelijke waarde
+
+function updateValueDisplay() {
+  if (tempValue === null || tempValue === undefined) {
+    hpValueDisplay.textContent = "—";
+    hpValueDisplay.classList.add("empty");
+  } else {
+    hpValueDisplay.textContent = tempValue;
+    hpValueDisplay.classList.remove("empty");
+  }
 }
+
+function changeTempValue(amount) {
+  const current = tempValue === null || tempValue === undefined ? 0 : tempValue;
+  tempValue = Math.max(0, current + amount);
+  updateValueDisplay();
+}
+
+function updateHistoryButtons() {
+  undoButton.disabled = historyIndex < 0;
+  redoButton.disabled = historyIndex >= actionHistory.length - 1;
+}
+
 function undo() {
   if (historyIndex < 0) return;
 
-  const action =
-    actionHistory[historyIndex];
+  const action = actionHistory[historyIndex];
 
   if (action.type === "addMonster") {
-    const index =
-      activeMonsters.indexOf(action.monster);
-
-    if (index !== -1) {
-      activeMonsters.splice(index, 1);
-    }
-
+    const index = activeMonsters.indexOf(action.monster);
+    if (index !== -1) activeMonsters.splice(index, 1);
     saveActiveMonsters();
   } else {
-    // Oude HP-actie
-    if (
-      action.oldValue === undefined ||
-      action.oldValue === null
-    ) {
+    if (action.oldValue === undefined || action.oldValue === null) {
       delete state[action.id];
     } else {
-      state[action.id] =
-        action.oldValue;
+      state[action.id] = action.oldValue;
     }
-
     saveState();
   }
 
   historyIndex--;
-
   saveActionHistory();
 
   render();
   updateHistoryButtons();
 
   if (selectedId) {
-    hpInput.value =
-      state[selectedId] ?? "";
-
+    tempValue = state[selectedId] ?? null;
+    updateValueDisplay();
     renderHpHistory(selectedId);
   }
 }
 
 function redo() {
-  if (
-    historyIndex >=
-    actionHistory.length - 1
-  ) {
-    return;
-  }
+  if (historyIndex >= actionHistory.length - 1) return;
 
   historyIndex++;
-
-  const action =
-    actionHistory[historyIndex];
+  const action = actionHistory[historyIndex];
 
   if (action.type === "addMonster") {
-    if (
-      !activeMonsters.includes(
-        action.monster
-      )
-    ) {
-      activeMonsters.push(
-        action.monster
-      );
+    if (!activeMonsters.includes(action.monster)) {
+      activeMonsters.push(action.monster);
     }
-
     saveActiveMonsters();
   } else {
-    // Oude HP-actie
     if (action.newValue === null) {
       delete state[action.id];
     } else {
-      state[action.id] =
-        action.newValue;
+      state[action.id] = action.newValue;
     }
-
     saveState();
   }
 
@@ -536,9 +525,8 @@ function redo() {
   updateHistoryButtons();
 
   if (selectedId) {
-    hpInput.value =
-      state[selectedId] ?? "";
-
+    tempValue = state[selectedId] ?? null;
+    updateValueDisplay();
     renderHpHistory(selectedId);
   }
 }
@@ -546,159 +534,104 @@ function redo() {
 function openEditor(monster, number) {
   selectedId = `${monster}${number}`;
 
-  dialogMonster.textContent =
-    `MONSTER ${monster}`;
+  dialogMonster.textContent = `MONSTER ${monster}`;
+  dialogTitle.textContent = `Veld ${number}`;
 
-  dialogTitle.textContent =
-    `Veld ${number}`;
-
-  hpInput.value =
-    state[selectedId] ?? "";
+  // Tussenwaarde initialiseren met de opgeslagen waarde
+  tempValue = state[selectedId] ?? null;
+  updateValueDisplay();
 
   renderHpHistory(selectedId);
-
   dialog.showModal();
-
-  requestAnimationFrame(() => {
-    hpInput.focus();
-    hpInput.select();
-  });
 }
 
 function closeDialog() {
   if (dialog.open) {
     dialog.close();
+    selectedId = null;
+    tempValue = null;
   }
 }
 
-function addHpHistory(id, value) {
-  hpHistory[id] ||= [];
+// Opslaan: verwerkt de tussenwaarde definitief
+function saveHitpoints() {
+  if (!selectedId) return;
 
-  hpHistory[id].push(value);
+  const newValue = (tempValue === null || tempValue === undefined) ? null : tempValue;
+  const oldValue = state[selectedId];
 
-  // Bewaar maximaal de laatste 20 waarden.
-  if (hpHistory[id].length > 20) {
-    hpHistory[id].shift();
-  }
-
-  saveHpHistory();
-}
-
-function renderHpHistory(id) {
-  hpHistoryElement.replaceChildren();
-
-  const history = hpHistory[id] || [];
-
-  if (history.length === 0) {
-    const empty = document.createElement("span");
-
-    empty.className = "hp-history-empty";
-    empty.textContent = "Nog geen wijzigingen";
-
-    hpHistoryElement.appendChild(empty);
-
-    return;
-  }
-
-  [...history]
-    .reverse()
-    .forEach((value) => {
-      const item = document.createElement("span");
-
-      item.textContent = value;
-
-      hpHistoryElement.appendChild(item);
-    });
-}
-
-function setHitpoints(id, newValue, recordHistory = true) {
-  const oldValue = state[id];
-
+  // Niets verandert → gewoon sluiten
   if (oldValue === newValue) {
+    closeDialog();
     return;
   }
 
-  if (recordHistory) {
-    actionHistory.splice(
-      historyIndex + 1
-    );
+  // History push
+  actionHistory.splice(historyIndex + 1);
+  actionHistory.push({
+    type: "hp",
+    id: selectedId,
+    oldValue,
+    newValue
+  });
+  historyIndex = actionHistory.length - 1;
+  saveActionHistory();
 
-    actionHistory.push({
-      type: "hp",
-      id,
-      oldValue,
-      newValue
-    });
-
-    historyIndex =
-      actionHistory.length - 1;
-
-    saveActionHistory();
-  }
-
-  if (newValue === null || newValue === undefined) {
-    delete state[id];
+  // State updaten
+  if (newValue === null) {
+    delete state[selectedId];
   } else {
-    state[id] = Math.max(
-      0,
-      Number.parseInt(newValue, 10)
-    );
+    state[selectedId] = newValue;
   }
-
-if (
-  recordHistory &&
-  oldValue !== undefined &&
-  oldValue !== null
-) {
-  addHpHistory(id, oldValue);
-}
-
   saveState();
+
+  // HP-history alleen bij daadwerkelijke wijziging
+  if (oldValue !== undefined && oldValue !== null) {
+    addHpHistory(selectedId, oldValue);
+  }
 
   render();
   updateHistoryButtons();
-}
-
-function changeHitpoints(id, amount) {
-  const currentValue =
-    state[id] === undefined
-      ? 0
-      : state[id];
-
-  const newValue = Math.max(
-    0,
-    currentValue + amount
-  );
-
-  setHitpoints(
-    id,
-    newValue
-  );
-
-  hpInput.value = newValue;
-}
-
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-
-  if (!selectedId) return;
-
-  const value = hpInput.value.trim();
-
-  if (value === "") return;
-
-  const newValue = Math.max(
-    0,
-    Number.parseInt(value, 10)
-  );
-
-  setHitpoints(
-    selectedId,
-    newValue
-  );
-  renderHpHistory(selectedId);
   closeDialog();
+}
+
+// Snelknoppen en − / + knoppen
+hpStepButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    if (!selectedId) return;
+    const step = Number.parseInt(button.dataset.step, 10);
+    changeTempValue(step);
+  });
 });
+
+hpAdjustButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    if (!selectedId) return;
+    const amount = Number.parseInt(button.dataset.hpChange, 10);
+    changeTempValue(amount);
+  });
+});
+
+// Opslaan-knop
+saveButton.addEventListener("click", saveHitpoints);
+
+// Leegmaken-knop
+clearButton.addEventListener("click", () => {
+  if (!selectedId) return;
+  tempValue = null;
+  updateValueDisplay();
+});
+
+closeButton.addEventListener("click", closeDialog);
+
+dialog.addEventListener("click", (event) => {
+  if (event.target === dialog) {
+    closeDialog();
+  }
+});
+
+undoButton.addEventListener("click", undo);
+redoButton.addEventListener("click", redo);
 
 clearButton.addEventListener("click", () => {
   if (!selectedId) return;
