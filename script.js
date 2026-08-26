@@ -2,11 +2,23 @@ const STORAGE_KEY = "rove-hitpoints-v1";
 const ACTIVE_MONSTERS_KEY = "rove-active-monsters-v1";
 const ROUND_KEY = "rove-current-round-v1";
 const TURN_STATE_KEY = "rove-turn-state-v1";
+const HP_HISTORY_KEY = "rove-hp-history-v1";
+const ACTION_HISTORY_KEY = "rove-action-history-v1";
 
 const DEFAULT_MONSTERS = ["A", "B", "C"];
 const OPTIONAL_MONSTERS = ["D", "E", "F"];
 
 const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+
+const hpHistory = JSON.parse(
+  localStorage.getItem(HP_HISTORY_KEY) || "{}"
+);
+
+const actionHistory = JSON.parse(
+  localStorage.getItem(ACTION_HISTORY_KEY) || "[]"
+);
+
+let historyIndex = actionHistory.length - 1;
 
 let activeMonsters = JSON.parse(
   localStorage.getItem(ACTIVE_MONSTERS_KEY) ||
@@ -50,6 +62,18 @@ const roundMinusButton = document.getElementById("roundMinusButton");
 const roundPlusButton = document.getElementById("roundPlusButton");
 const roundCloseButton = document.getElementById("roundCloseButton");
 
+const hpHistoryElement =
+  document.getElementById("hpHistory");
+
+const undoButton =
+  document.getElementById("undoButton");
+
+const redoButton =
+  document.getElementById("redoButton");
+
+const hpAdjustButtons =
+  document.querySelectorAll(".hp-adjust-button");
+
 // ------------------------------------------------------------
 // Turn state
 // ------------------------------------------------------------
@@ -89,7 +113,19 @@ let selectedId = null;
 // ------------------------------------------------------------
 // Storage
 // ------------------------------------------------------------
+function saveHpHistory() {
+  localStorage.setItem(
+    HP_HISTORY_KEY,
+    JSON.stringify(hpHistory)
+  );
+}
 
+function saveActionHistory() {
+  localStorage.setItem(
+    ACTION_HISTORY_KEY,
+    JSON.stringify(actionHistory)
+  );
+}
 function saveTurnState() {
   localStorage.setItem(
     TURN_STATE_KEY,
@@ -389,6 +425,79 @@ function addNextMonster() {
 // Hitpoint editor
 // ------------------------------------------------------------
 
+function updateHistoryButtons() {
+  undoButton.disabled =
+    historyIndex < 0;
+
+  redoButton.disabled =
+    historyIndex >= actionHistory.length - 1;
+}
+function undo() {
+  if (historyIndex < 0) return;
+
+  const action =
+    actionHistory[historyIndex];
+
+  if (
+    action.oldValue === undefined ||
+    action.oldValue === null
+  ) {
+    delete state[action.id];
+  } else {
+    state[action.id] =
+      action.oldValue;
+  }
+
+  historyIndex--;
+
+  saveState();
+  saveActionHistory();
+
+  render();
+  updateHistoryButtons();
+
+  if (selectedId) {
+    hpInput.value =
+      state[selectedId] ?? "";
+
+    renderHpHistory(selectedId);
+  }
+}
+
+function redo() {
+  if (
+    historyIndex >=
+    actionHistory.length - 1
+  ) {
+    return;
+  }
+
+  historyIndex++;
+
+  const action =
+    actionHistory[historyIndex];
+
+  if (action.newValue === null) {
+    delete state[action.id];
+  } else {
+    state[action.id] =
+      action.newValue;
+  }
+
+  saveState();
+  saveActionHistory();
+
+  render();
+  updateHistoryButtons();
+
+  if (selectedId) {
+    hpInput.value =
+      state[selectedId] ?? "";
+
+    renderHpHistory(selectedId);
+  }
+}
+
 function openEditor(monster, number) {
   selectedId = `${monster}${number}`;
 
@@ -400,6 +509,8 @@ function openEditor(monster, number) {
 
   hpInput.value =
     state[selectedId] ?? "";
+
+  renderHpHistory(selectedId);
 
   dialog.showModal();
 
@@ -415,6 +526,112 @@ function closeDialog() {
   }
 }
 
+function addHpHistory(id, value) {
+  hpHistory[id] ||= [];
+
+  hpHistory[id].push(value);
+
+  // Bewaar maximaal de laatste 20 waarden.
+  if (hpHistory[id].length > 20) {
+    hpHistory[id].shift();
+  }
+
+  saveHpHistory();
+}
+
+function renderHpHistory(id) {
+  hpHistoryElement.replaceChildren();
+
+  const history = hpHistory[id] || [];
+
+  if (history.length === 0) {
+    const empty = document.createElement("span");
+
+    empty.className = "hp-history-empty";
+    empty.textContent = "Nog geen wijzigingen";
+
+    hpHistoryElement.appendChild(empty);
+
+    return;
+  }
+
+  [...history]
+    .reverse()
+    .forEach((value) => {
+      const item = document.createElement("span");
+
+      item.textContent = value;
+
+      hpHistoryElement.appendChild(item);
+    });
+}
+
+function setHitpoints(id, newValue, recordHistory = true) {
+  const oldValue = state[id];
+
+  if (oldValue === newValue) {
+    return;
+  }
+
+  if (recordHistory) {
+    actionHistory.splice(
+      historyIndex + 1
+    );
+
+    actionHistory.push({
+      id,
+      oldValue,
+      newValue
+    });
+
+    historyIndex =
+      actionHistory.length - 1;
+
+    saveActionHistory();
+  }
+
+  if (newValue === null || newValue === undefined) {
+    delete state[id];
+  } else {
+    state[id] = Math.max(
+      0,
+      Number.parseInt(newValue, 10)
+    );
+  }
+
+if (
+  recordHistory &&
+  oldValue !== undefined &&
+  oldValue !== null
+) {
+  addHpHistory(id, oldValue);
+}
+
+  saveState();
+
+  render();
+  updateHistoryButtons();
+}
+
+function changeHitpoints(id, amount) {
+  const currentValue =
+    state[id] === undefined
+      ? 0
+      : state[id];
+
+  const newValue = Math.max(
+    0,
+    currentValue + amount
+  );
+
+  setHitpoints(
+    id,
+    newValue
+  );
+
+  hpInput.value = newValue;
+}
+
 form.addEventListener("submit", (event) => {
   event.preventDefault();
 
@@ -424,24 +641,32 @@ form.addEventListener("submit", (event) => {
 
   if (value === "") return;
 
-  state[selectedId] =
-    Math.max(
-      0,
-      Number.parseInt(value, 10)
-    );
+  const newValue = Math.max(
+    0,
+    Number.parseInt(value, 10)
+  );
 
-  saveState();
-  render();
+  setHitpoints(
+    selectedId,
+    newValue
+  );
+  renderHpHistory(selectedId);
   closeDialog();
 });
 
 clearButton.addEventListener("click", () => {
   if (!selectedId) return;
 
-  delete state[selectedId];
+  if (state[selectedId] === undefined) {
+    closeDialog();
+    return;
+  }
 
-  saveState();
-  render();
+  setHitpoints(
+    selectedId,
+    null
+  );
+
   closeDialog();
 });
 
@@ -455,6 +680,35 @@ dialog.addEventListener("click", (event) => {
     closeDialog();
   }
 });
+
+hpAdjustButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    if (!selectedId) return;
+
+    const amount =
+      Number.parseInt(
+        button.dataset.hpChange,
+        10
+      );
+
+    changeHitpoints(
+      selectedId,
+      amount
+    );
+
+    renderHpHistory(selectedId);
+  });
+});
+
+undoButton.addEventListener(
+  "click",
+  undo
+);
+
+redoButton.addEventListener(
+  "click",
+  redo
+);
 
 // ------------------------------------------------------------
 // Round dialog
@@ -552,6 +806,7 @@ render();
 renderHeroTurns();
 renderHeroCounters();
 updateRoundUI();
+updateHistoryButtons();
 
 // ------------------------------------------------------------
 // Screen Wake Lock
