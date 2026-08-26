@@ -17,6 +17,29 @@
         <h5>Hitpoint Tracker</h5>
       </div>
       <div class="topbar-actions">
+        <div class="history-actions" aria-label="Wijzigingen">
+    <button
+      id="undoButton"
+      class="secondary-button"
+      type="button"
+      aria-label="Ongedaan maken"
+      title="Ongedaan maken"
+      disabled
+    >
+      ↶
+    </button>
+
+    <button
+      id="redoButton"
+      class="secondary-button"
+      type="button"
+      aria-label="Opnieuw uitvoeren"
+      title="Opnieuw uitvoeren"
+      disabled
+    >
+      ↷
+    </button>
+  </div>
           <button
     id="wakeLockButton"
     class="secondary-button"
@@ -64,21 +87,92 @@
     <p class="hint">Klik op een veld om de actuele hitpoints in te voeren of te wijzigen.</p>
   </main>
 
-  <dialog id="hpDialog">
-    <form method="dialog" id="hpForm" class="modal">
-      <button class="close-button" type="button" id="closeButton" aria-label="Sluiten">×</button>
-      <p class="eyebrow" id="dialogMonster">A</p>
-      <h2 id="dialogTitle">Veld 1</h2>
+<dialog id="hpDialog">
+  <form method="dialog" id="hpForm" class="modal">
+    <button
+      class="close-button"
+      type="button"
+      id="closeButton"
+      aria-label="Sluiten"
+    >
+      ×
+    </button>
 
-      <label for="hpInput">Actuele hitpoints</label>
-      <input id="hpInput" name="hp" type="number" inputmode="numeric" min="0" step="1" placeholder="Bijv. 12" autocomplete="off" required>
+    <p class="eyebrow" id="dialogMonster">A</p>
+    <h2 id="dialogTitle">Veld 1</h2>
 
-      <div class="modal-actions">
-        <button class="secondary-button" type="button" id="clearButton">Leegmaken</button>
-        <button class="primary-button" value="save">Opslaan</button>
+    <label for="hpInput">Actuele hitpoints</label>
+
+    <input
+      id="hpInput"
+      name="hp"
+      type="number"
+      inputmode="numeric"
+      min="0"
+      step="1"
+      placeholder="Bijv. 12"
+      autocomplete="off"
+      required
+    >
+
+    <div class="hp-adjustments" aria-label="Hitpoints aanpassen">
+      <button type="button" class="hp-adjust-button damage" data-hp-change="-5">
+        −5
+      </button>
+
+      <button type="button" class="hp-adjust-button damage" data-hp-change="-3">
+        −3
+      </button>
+
+      <button type="button" class="hp-adjust-button damage" data-hp-change="-1">
+        −1
+      </button>
+
+      <button type="button" class="hp-adjust-button heal" data-hp-change="1">
+        +1
+      </button>
+
+      <button type="button" class="hp-adjust-button heal" data-hp-change="3">
+        +3
+      </button>
+
+      <button type="button" class="hp-adjust-button heal" data-hp-change="5">
+        +5
+      </button>
+    </div>
+
+    <section class="hp-history" aria-labelledby="hpHistoryTitle">
+      <div class="hp-history-header">
+        <span class="eyebrow" id="hpHistoryTitle">
+          Vorige hitpoints
+        </span>
       </div>
-    </form>
-  </dialog>
+
+      <div id="hpHistory" class="hp-history-list">
+        <span class="hp-history-empty">
+          Nog geen wijzigingen
+        </span>
+      </div>
+    </section>
+
+    <div class="modal-actions">
+      <button
+        class="secondary-button"
+        type="button"
+        id="clearButton"
+      >
+        Leegmaken
+      </button>
+
+      <button
+        class="primary-button"
+        value="save"
+      >
+        Opslaan
+      </button>
+    </div>
+  </form>
+</dialog>
 
   
   <dialog id="roundDialog">
