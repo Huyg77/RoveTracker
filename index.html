@@ -87,8 +87,8 @@
     <p class="hint">Click on a field to adjust damage.</p>
   </main>
 
-<dialog id="hpDialog">
-  <form method="dialog" id="hpForm" class="modal">
+dialog id="hpDialog">
+  <div class="modal" id="hpForm">
     <button
       class="close-button"
       type="button"
@@ -101,77 +101,50 @@
     <p class="eyebrow" id="dialogMonster">A</p>
     <h2 id="dialogTitle">Veld 1</h2>
 
-    <label for="hpInput">Actuele hitpoints</label>
+    <!-- Grote waarde met − en + ernaast -->
+    <div class="hp-value-control">
+      <button
+        class="hp-step-button"
+        type="button"
+        data-step="-1"
+        aria-label="Verminderen met 1"
+      >−</button>
 
-    <input
-      id="hpInput"
-      name="hp"
-      type="number"
-      inputmode="numeric"
-      min="0"
-      step="1"
-      placeholder="Bijv. 12"
-      autocomplete="off"
-      required
-    >
+      <span class="hp-value-display" id="hpValueDisplay">—</span>
 
-    <div class="hp-adjustments" aria-label="Hitpoints aanpassen">
-      <button type="button" class="hp-adjust-button damage" data-hp-change="-5">
-        −5
-      </button>
-
-      <button type="button" class="hp-adjust-button damage" data-hp-change="-3">
-        −3
-      </button>
-
-      <button type="button" class="hp-adjust-button damage" data-hp-change="-1">
-        −1
-      </button>
-
-      <button type="button" class="hp-adjust-button heal" data-hp-change="1">
-        +1
-      </button>
-
-      <button type="button" class="hp-adjust-button heal" data-hp-change="3">
-        +3
-      </button>
-
-      <button type="button" class="hp-adjust-button heal" data-hp-change="5">
-        +5
-      </button>
+      <button
+        class="hp-step-button"
+        type="button"
+        data-step="1"
+        aria-label="Verhogen met 1"
+      >+</button>
     </div>
 
+    <!-- Snelknoppen -->
+    <div class="hp-adjustments" aria-label="Hitpoints aanpassen">
+      <button type="button" class="hp-adjust-button damage" data-hp-change="-5">−5</button>
+      <button type="button" class="hp-adjust-button damage" data-hp-change="-3">−3</button>
+      <button type="button" class="hp-adjust-button damage" data-hp-change="-1">−1</button>
+      <button type="button" class="hp-adjust-button heal" data-hp-change="1">+1</button>
+      <button type="button" class="hp-adjust-button heal" data-hp-change="3">+3</button>
+      <button type="button" class="hp-adjust-button heal" data-hp-change="5">+5</button>
+    </div>
+
+    <!-- Vorige hitpoints -->
     <section class="hp-history" aria-labelledby="hpHistoryTitle">
       <div class="hp-history-header">
-        <span class="eyebrow" id="hpHistoryTitle">
-          Vorige hitpoints
-        </span>
+        <span class="eyebrow" id="hpHistoryTitle">Vorige hitpoints</span>
       </div>
-
       <div id="hpHistory" class="hp-history-list">
-        <span class="hp-history-empty">
-          Nog geen wijzigingen
-        </span>
+        <span class="hp-history-empty">Nog geen wijzigingen</span>
       </div>
     </section>
 
     <div class="modal-actions">
-      <button
-        class="secondary-button"
-        type="button"
-        id="clearButton"
-      >
-        Leegmaken
-      </button>
-
-      <button
-        class="primary-button"
-        value="save"
-      >
-        Opslaan
-      </button>
+      <button class="secondary-button" type="button" id="clearButton">Leegmaken</button>
+      <button class="primary-button" type="button" id="saveButton">Opslaan</button>
     </div>
-  </form>
+  </div>
 </dialog>
 
   
