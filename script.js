@@ -438,14 +438,39 @@ function addNextMonster() {
 }
 
 // ------------------------------------------------------------
+// Hitpoint history rendering
+// ------------------------------------------------------------
+
+function renderHpHistory(id) {
+  hpHistoryElement.replaceChildren();
+
+  const history = hpHistory[id] || [];
+
+  if (history.length === 0) {
+    const empty = document.createElement("span");
+    empty.className = "hp-history-empty";
+    empty.textContent = "Nog geen wijzigingen";
+    hpHistoryElement.appendChild(empty);
+    return;
+  }
+
+  [...history]
+    .reverse()
+    .forEach((value) => {
+      const item = document.createElement("span");
+      item.textContent = value;
+      hpHistoryElement.appendChild(item);
+    });
+}
+
+// ------------------------------------------------------------
 // Hitpoint editor
 // ------------------------------------------------------------
 
 const hpValueDisplay = document.getElementById("hpValueDisplay");
 const saveButton = document.getElementById("saveButton");
-const hpStepButtons = document.querySelectorAll(".hp-step-button");
 
-let tempValue = null;   // null = leeg, getal = tijdelijke waarde
+let tempValue = null; // null = leeg, getal = tijdelijke waarde
 
 function updateValueDisplay() {
   if (tempValue === null || tempValue === undefined) {
@@ -461,74 +486,6 @@ function changeTempValue(amount) {
   const current = tempValue === null || tempValue === undefined ? 0 : tempValue;
   tempValue = Math.max(0, current + amount);
   updateValueDisplay();
-}
-
-function updateHistoryButtons() {
-  undoButton.disabled = historyIndex < 0;
-  redoButton.disabled = historyIndex >= actionHistory.length - 1;
-}
-
-function undo() {
-  if (historyIndex < 0) return;
-
-  const action = actionHistory[historyIndex];
-
-  if (action.type === "addMonster") {
-    const index = activeMonsters.indexOf(action.monster);
-    if (index !== -1) activeMonsters.splice(index, 1);
-    saveActiveMonsters();
-  } else {
-    if (action.oldValue === undefined || action.oldValue === null) {
-      delete state[action.id];
-    } else {
-      state[action.id] = action.oldValue;
-    }
-    saveState();
-  }
-
-  historyIndex--;
-  saveActionHistory();
-
-  render();
-  updateHistoryButtons();
-
-  if (selectedId) {
-    tempValue = state[selectedId] ?? null;
-    updateValueDisplay();
-    renderHpHistory(selectedId);
-  }
-}
-
-function redo() {
-  if (historyIndex >= actionHistory.length - 1) return;
-
-  historyIndex++;
-  const action = actionHistory[historyIndex];
-
-  if (action.type === "addMonster") {
-    if (!activeMonsters.includes(action.monster)) {
-      activeMonsters.push(action.monster);
-    }
-    saveActiveMonsters();
-  } else {
-    if (action.newValue === null) {
-      delete state[action.id];
-    } else {
-      state[action.id] = action.newValue;
-    }
-    saveState();
-  }
-
-  saveActionHistory();
-
-  render();
-  updateHistoryButtons();
-
-  if (selectedId) {
-    tempValue = state[selectedId] ?? null;
-    updateValueDisplay();
-    renderHpHistory(selectedId);
-  }
 }
 
 function openEditor(monster, number) {
@@ -553,7 +510,19 @@ function closeDialog() {
   }
 }
 
-// Opslaan: verwerkt de tussenwaarde definitief
+function addHpHistory(id, value) {
+  hpHistory[id] ||= [];
+
+  hpHistory[id].push(value);
+
+  // Bewaar maximaal de laatste 20 waarden.
+  if (hpHistory[id].length > 20) {
+    hpHistory[id].shift();
+  }
+
+  saveHpHistory();
+}
+
 function saveHitpoints() {
   if (!selectedId) return;
 
