@@ -61,7 +61,9 @@ const roundDialogValue = document.getElementById("roundDialogValue");
 const roundMinusButton = document.getElementById("roundMinusButton");
 const roundPlusButton = document.getElementById("roundPlusButton");
 const roundCloseButton = document.getElementById("roundCloseButton");
-
+const hpValueDisplay = document.getElementById("hpValueDisplay");
+const saveButton = document.getElementById("saveButton");
+const hpStepButtons = document.querySelectorAll(".hp-step-button");
 const hpHistoryElement =
   document.getElementById("hpHistory");
 
