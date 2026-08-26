@@ -460,6 +460,67 @@ h1 {
   font-weight: 500;
 }
 
+.hp-value-control {
+  display: grid;
+  grid-template-columns: 56px 1fr 56px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.hp-step-button {
+  width: 56px;
+  height: 56px;
+  padding: 0;
+
+  border: 2px solid #6d5751;
+  border-radius: 12px;
+
+  background: #403532;
+  color: var(--cream);
+
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition: background-color .12s ease, transform .12s ease;
+}
+
+.hp-step-button:hover {
+  background: #51423d;
+  border-color: #8b7067;
+}
+
+.hp-step-button:active {
+  transform: scale(.94);
+}
+
+.hp-value-display {
+  display: grid;
+  place-items: center;
+
+  min-height: 56px;
+  padding: 8px 12px;
+
+  border: 2px solid #6d5751;
+  border-radius: 12px;
+
+  background: #120f0e;
+  color: var(--cream);
+
+  font-size: 1.8rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.hp-value-display.empty {
+  color: #665c57;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
 .slot-number {
   position: absolute;
   left: 0;
@@ -925,6 +986,32 @@ dialog::backdrop {
   
   #resetButton {
     order: 5;
+  }
+
+  .hp-value-control {
+    grid-template-columns: 60px 1fr 60px;
+    gap: 8px;
+  }
+
+  .hp-step-button {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+  }
+
+  .hp-value-display {
+    min-height: 60px;
+    font-size: 2rem;
+  }
+
+  .hp-adjustments {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .hp-adjust-button {
+    min-height: 48px;
+    font-size: 1rem;
   }
   
 }
