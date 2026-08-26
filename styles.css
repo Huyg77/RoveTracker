@@ -768,7 +768,7 @@ dialog::backdrop {
   }
 
   .topbar-actions {
-    gap: 5px;
+    gap: 15px;
   }
 
   .add-button {
