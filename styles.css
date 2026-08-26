@@ -69,9 +69,8 @@ input {
 }
 
 .topbar-actions > button {
-  flex-shrink: 1;
-  min-width: 0;
-  box-sizing: border-box;
+  flex: 0 0 auto;
+  max-width: none;
 }
 
 .eyebrow {
@@ -122,8 +121,10 @@ h1 {
    ------------------------------------------------------------ */
 
 #wakeLockButton {
-  flex: 1 1 auto;
-  min-width: 0;
+  flex: 0 0 auto;
+  width: fit-content;
+  min-width: auto;
+  padding: 10px 12px;
 }
 
 .secondary-button:disabled {
@@ -780,6 +781,17 @@ dialog::backdrop {
     padding: 7px 10px;
     font-size: .8rem;
   }
+  
+    .secondary-button,
+  .round-tracker,
+  .add-button {
+    min-height: 38px;
+    min-width: 38px;
+  }
+  
+  #wakeLockButton {
+    min-width: auto;
+  }
 
   .round-tracker {
     min-width: 36px;
@@ -877,4 +889,42 @@ dialog::backdrop {
     margin-top: 7px;
     font-size: .7rem;
   }
+.topbar-actions {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 4px 0;
+  }
+  
+  .topbar-actions > button {
+    flex-shrink: 0;
+    width: auto;
+    margin: 2px;
+  }
+  
+  #wakeLockButton {
+    font-size: 0.75rem;
+    padding: 7px 10px;
+  }
+  
+  /* Reset undo/redo buttons */
+  .history-actions {
+    order: 1;
+  }
+  
+  #wakeLockButton {
+    order: 2;
+  }
+  
+  #roundTrackerButton {
+    order: 3;
+  }
+  
+  #addMonsterButton {
+    order: 4;
+  }
+  
+  #resetButton {
+    order: 5;
+  }
+  
 }
