@@ -52,16 +52,20 @@ input {
 
 .topbar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 22px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.6rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .topbar-actions {
-  display: flex;
+  display: grid;
+  grid-template-columns: 2.5rem 2.5rem minmax(0, 1fr) 2.75rem 2.75rem 4rem;
   align-items: center;
-  gap: 10px;
+  gap: 0.4rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .eyebrow {
@@ -79,11 +83,12 @@ h1 {
 }
 
 .app-title {
-  width: 100%;
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  min-height: 1.5rem;
+  width: 100%;
+  min-height: 1rem;
+  box-sizing: border-box;
 }
 
 .app-title span:first-child {
