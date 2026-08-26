@@ -828,10 +828,6 @@ dialog::backdrop {
     margin-bottom: 1px;
   }
 
-  .topbar-actions {
-    gap: 6px;
-  }
-
   .add-button {
     width: 34px;
     height: 34px;
@@ -951,6 +947,7 @@ dialog::backdrop {
     font-size: .7rem;
   }
 .topbar-actions {
+    gap: 6px;
     flex-wrap: wrap;
     justify-content: center;
     padding: 4px 0;
