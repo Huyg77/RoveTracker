@@ -78,6 +78,27 @@ h1 {
   letter-spacing: -.03em;
 }
 
+.app-title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 1.5rem;
+}
+
+.app-title span:first-child {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.app-title span:last-child {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  opacity: 0.65;
+}
+
 /* ------------------------------------------------------------
    Wake lock
    ------------------------------------------------------------ */
