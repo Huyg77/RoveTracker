@@ -146,6 +146,8 @@ button { -webkit-tap-highlight-color: transparent; }
 
 .hero-hp {
   min-width: 0;
+  display: flex;
+  align-items: center;
 }
 
 .hero-hp-button {
@@ -158,6 +160,7 @@ button { -webkit-tap-highlight-color: transparent; }
   color: var(--cream);
   cursor: pointer;
   font-weight: 800;
+  margin-right: 5px;
 }
 
 .hero-hp-button.empty { color: #665c57; font-weight: 500; }
