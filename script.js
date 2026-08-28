@@ -292,6 +292,7 @@ function renderHeroes() {
     const hpButton = document.createElement("button");
     hpButton.type = "button";
     hpButton.className = "hero-hp-button";
+    
     const hasHp = state[hero] !== undefined;
     hpButton.textContent = hasHp ? state[hero] : "—";
     if (!hasHp) hpButton.classList.add("empty");
@@ -299,6 +300,10 @@ function renderHeroes() {
     hpButton.addEventListener("click", () => openHeroEditor(hero));
 
     hpWrap.append(hpButton);
+
+    const hpLabel = document.createElement("h6");
+    hpLabel.textContent = "hp";
+    hpWrap.append(hpLabel);
 
     const status = document.createElement("div");
     status.className = "hero-status";
