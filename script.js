@@ -271,16 +271,23 @@ function renderHeroes() {
     const panel = document.createElement("section");
     panel.className = "hero-panel";
 
-    const label = document.createElement("div");
+    const label = document.createElement("button");
+    label.type = "button";
     label.className = "hero-label";
     label.textContent = hero;
 
+    const turnUsed = turnState.heroes[heroNumber] === true;
+    label.classList.toggle("used", turnUsed);
+    label.setAttribute("aria-pressed", String(turnUsed));
+    label.setAttribute("aria-label", `${hero} turn`);
+    label.addEventListener("click", () => {
+      turnState.heroes[heroNumber] = !turnState.heroes[heroNumber];
+      saveTurnState();
+      renderHeroes();
+    });
+
     const hpWrap = document.createElement("div");
     hpWrap.className = "hero-hp";
-
-    const hpLabel = document.createElement("span");
-    hpLabel.className = "hero-hp-label";
-    hpLabel.textContent = "HP";
 
     const hpButton = document.createElement("button");
     hpButton.type = "button";
@@ -291,23 +298,10 @@ function renderHeroes() {
     hpButton.setAttribute("aria-label", `${hero} hitpoints wijzigen`);
     hpButton.addEventListener("click", () => openHeroEditor(hero));
 
-    hpWrap.append(hpLabel, hpButton);
+    hpWrap.append(hpButton);
 
     const status = document.createElement("div");
     status.className = "hero-status";
-
-    const turn = document.createElement("button");
-    turn.type = "button";
-    turn.className = "hero-turn";
-    turn.textContent = "Turn";
-    const turnUsed = turnState.heroes[heroNumber] === true;
-    turn.classList.toggle("used", turnUsed);
-    turn.setAttribute("aria-pressed", String(turnUsed));
-    turn.addEventListener("click", () => {
-      turnState.heroes[heroNumber] = !turnState.heroes[heroNumber];
-      saveTurnState();
-      renderHeroes();
-    });
 
     const counter = document.createElement("button");
     counter.type = "button";
@@ -323,7 +317,7 @@ function renderHeroes() {
       renderHeroes();
     });
 
-    status.append(turn, counter);
+    status.append(counter);
     panel.append(label, hpWrap, status);
     heroesElement.appendChild(panel);
   });
@@ -377,11 +371,7 @@ function createGroup(monster) {
   ability.setAttribute("aria-label", `Round ability van monster ${monster}: ${getAbility(monster)}`);
   ability.addEventListener("click", () => changeAbility(monster));
 
-  const caption = document.createElement("span");
-  caption.className = "ability-caption";
-  caption.textContent = "ability";
-
-  heading.append(title, ability, caption);
+  heading.append(title, ability);
 
   const grid = document.createElement("div");
   grid.className = "hp-grid";
