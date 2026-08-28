@@ -1,6 +1,4 @@
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 :root {
   --bg: #181413;
@@ -14,16 +12,10 @@
   --cream: #eee6dc;
   --muted: #b9aaa0;
   --white: #fff;
-
-  /* Used / disabled appearance */
   --used-bg: #66615e;
   --used-border: #85807c;
   --used-text: #d2cfcc;
 }
-
-/* ------------------------------------------------------------
-   Base
-   ------------------------------------------------------------ */
 
 body {
   margin: 0;
@@ -35,14 +27,9 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-button,
-input {
-  font: inherit;
-}
+button, input, select { font: inherit; }
 
-/* ------------------------------------------------------------
-   App / Header
-   ------------------------------------------------------------ */
+button { -webkit-tap-highlight-color: transparent; }
 
 .app {
   width: min(100% - 28px, 920px);
@@ -54,23 +41,50 @@ input {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.5rem;
+  gap: .5rem;
   width: 100%;
-  box-sizing: border-box;
+}
+
+.app-title {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  min-height: 1rem;
+}
+
+.app-title span:first-child {
+  font-size: .65rem;
+  font-weight: 800;
+  letter-spacing: .18em;
+}
+
+.app-title span:last-child {
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  opacity: .65;
 }
 
 .topbar-actions {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: .4rem;
   width: 100%;
   min-width: 0;
-  box-sizing: border-box;
 }
 
-.topbar-actions > button {
-  flex: 0 0 auto;
-  max-width: none;
+.topbar-actions > button { flex: 0 0 auto; }
+
+.history-actions {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  flex-shrink: 0;
+}
+
+.secondary-button:disabled {
+  cursor: default;
+  opacity: .45;
 }
 
 .eyebrow {
@@ -81,183 +95,88 @@ input {
   letter-spacing: .22em;
 }
 
-h1 {
-  margin: 0;
-  font-size: clamp(1.65rem, 4vw, 2.4rem);
-  letter-spacing: -.03em;
+/* HEROES */
+.heroes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 10px 0 12px;
 }
 
-.app-title {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  width: 100%;
-  min-height: 1rem;
-  box-sizing: border-box;
-}
-
-.app-title span:first-child {
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-}
-
-.app-title span:last-child {
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  opacity: 0.65;
-}
-
-#undoButton,
-#redoButton,
-#roundTrackerButton,
-#addMonsterButton {
-  flex: 0 0 auto;
-}
-
-/* ------------------------------------------------------------
-   Wake lock
-   ------------------------------------------------------------ */
-
-#wakeLockButton {
-  flex: 0 0 auto;
-  width: fit-content;
-  min-width: auto;
-  padding: 10px 12px;
-}
-
-.secondary-button:disabled {
-  cursor: default;
-  opacity: .45;
-}
-
-/* ------------------------------------------------------------
-   Board
-   ------------------------------------------------------------ */
-
-.board {
-  padding: clamp(12px, 2.5vw, 22px);
+.hero-panel {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  grid-template-rows: auto auto;
+  gap: 5px 8px;
+  padding: 8px;
   border: 1px solid #4d403c;
-  border-radius: 18px;
+  border-radius: 12px;
   background: linear-gradient(145deg, #312927, #211c1b);
-  box-shadow:
-    0 18px 50px rgba(0, 0, 0, .35),
-    inset 0 1px rgba(255, 255, 255, .04);
 }
 
-
-/* ------------------------------------------------------------
-   History buttons
-   ------------------------------------------------------------ */
-
-.hp-adjustments {
+.hero-label {
+  grid-row: 1 / 3;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0.5rem;
-  margin-top: 1rem;
+  place-items: center;
+  width: 42px;
+  min-height: 68px;
+  border-radius: 8px;
+  background: var(--red);
+  color: #fff;
+  font-weight: 800;
+  font-size: .9rem;
+  box-shadow: inset 0 0 0 1px #b04a44;
 }
 
-.hp-adjust-button {
-  min-height: 3rem;
-  border: 0;
-  border-radius: 0.75rem;
-  font: inherit;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.hp-adjust-button.damage {
-  background: #3a2927;
-  color: #ffb4a8;
-}
-
-.hp-adjust-button.heal {
-  background: #25372b;
-  color: #a8e6b5;
-}
-
-.hp-adjust-button:active {
-  transform: scale(0.96);
-}
-
-.hp-history {
-  margin-top: 1.25rem;
-}
-
-.hp-history-header {
-  margin-bottom: 0.5rem;
-}
-
-.hp-history-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.hp-history-list span {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 2.5rem;
-  min-height: 2rem;
-  padding: 0 0.5rem;
-  border-radius: 0.5rem;
-  background: #2a2524;
-}
-
-.hp-history-empty {
-  color: #888;
-}
-
-.history-actions {
+.hero-hp {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  flex-shrink: 0;
-}
-
-.history-actions button:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-
-
-/* ------------------------------------------------------------
-   Hero turn buttons
-   ------------------------------------------------------------ */
-
-.hero-turn-bar {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  justify-content: space-between;
   gap: 6px;
-  margin-bottom: 10px;
+  min-width: 0;
+}
+
+.hero-hp-label {
+  color: var(--muted);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+}
+
+.hero-hp-button {
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  border: 1px solid #6d5751;
+  border-radius: 7px;
+  background: #120f0e;
+  color: var(--cream);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.hero-hp-button.empty { color: #665c57; font-weight: 500; }
+
+.hero-status {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
 }
 
 .hero-turn, .hero-counter {
-  height: 28px;
+  height: 27px;
   padding: 0;
   border: 0;
-  border-radius: 8px; 
+  border-radius: 7px;
   color: white;
   font-weight: 700;
   cursor: pointer;
-
   appearance: none;
-  -webkit-appearance: none;
-
-  transition:
-    background-color .12s ease,
-    color .12s ease,
-    opacity .12s ease;
+  transition: background-color .12s ease, filter .12s ease;
 }
 
-.hero-turn{
-   background: var(--green);}
-
-.hero-counter{
-   background: var(--blue);
-}
+.hero-turn { background: var(--green); }
+.hero-counter { background: var(--blue); }
 
 .counter-symbol {
   position: relative;
@@ -265,142 +184,141 @@ h1 {
   width: 18px;
   height: 21px;
   color: currentColor;
+  vertical-align: middle;
 }
 
 .counter-symbol::before {
   content: "";
   position: absolute;
-  top: 2px;
-  left: 3px;
-
-  width: 12px;
-  height: 11px;
-
+  top: 2px; left: 3px;
+  width: 12px; height: 11px;
   background: currentColor;
-
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    68% 100%,
-    32% 100%
-  );
+  clip-path: polygon(0 0, 100% 0, 68% 100%, 32% 100%);
 }
 
 .counter-symbol::after {
   content: "";
   position: absolute;
-  left: 5px;
-  bottom: 0;
-
-  width: 8px;
-  height: 7px;
-
+  left: 5px; bottom: 0;
+  width: 8px; height: 7px;
   border-radius: 50%;
   background: currentColor;
 }
 
-/* Hero is used */
 .hero-turn.used, .hero-counter.used {
   background: var(--used-bg);
   color: var(--used-text);
 }
 
-/* Keep used buttons clickable so they can be toggled back */
-.hero-turn.used:hover,
-.hero-turn.used:focus-visible,
-.hero-counter.used:hover,
-.hero-counter.used:focus-visible {
-  background: var(--used-border);
+/* GENERAL */
+.primary-button, .secondary-button, .add-button, .close-button {
+  border: 0;
+  cursor: pointer;
 }
 
-.hero-turn:hover,
-.hero-turn:focus-visible,
-.hero-counter:hover,
-.hero-counter:focus-visible{
-  filter: brightness(1.1);
-  outline: none;
+.primary-button, .secondary-button {
+  padding: 10px 16px;
+  border-radius: 9px;
+  font-weight: 750;
 }
 
-.hero-turn:active,
-.hero-counter:active{
-  transform: translateY(1px);
+.primary-button { background: var(--red); color: white; }
+.primary-button:hover { background: #a52a25; }
+
+.secondary-button {
+  background: #403532;
+  color: var(--cream);
+  border: 1px solid #62504a;
 }
 
-.counter-bar {
-  margin-bottom: 22px;
+.secondary-button:hover { background: #51423d; }
+
+.add-button {
+  width: 42px;
+  height: 42px;
+  margin-right: 15px;
+  border-radius: 9px;
+  border: 1px solid #b04a44;
+  background: var(--red);
+  color: white;
+  font-size: 1.7rem;
+  font-weight: 500;
+  line-height: 1;
 }
 
-/* ------------------------------------------------------------
-   Monster groups
-   ------------------------------------------------------------ */
+.add-button:hover { background: #a52a25; }
 
-.monster-group {
-  padding: 0 0 18px;
+/* BOARD */
+.board {
+  padding: clamp(12px, 2.5vw, 22px);
+  border: 1px solid #4d403c;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #312927, #211c1b);
+  box-shadow: 0 18px 50px rgba(0,0,0,.35), inset 0 1px rgba(255,255,255,.04);
 }
 
+.monster-group { padding: 0 0 18px; }
 .monster-group + .monster-group {
   padding-top: 18px;
   border-top: 2px solid #574743;
 }
 
-.group-title {
+.group-heading {
   display: flex;
   align-items: center;
   gap: 9px;
   margin: 0 0 10px 2px;
-  padding: 0;
-
-  border: none;
-  background: transparent;
-
-  font-size: 1rem;
-  letter-spacing: .12em;
-
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
 }
 
-.group-title span {
+.group-title {
   display: inline-grid;
   place-items: center;
-
   width: 30px;
   height: 30px;
-
+  margin: 0;
+  padding: 0;
+  border: none;
   border-radius: 6px;
-
   background: var(--red);
   color: var(--white);
-
+  font-size: .9rem;
+  font-weight: 800;
+  cursor: pointer;
   box-shadow: inset 0 0 0 1px #b04a44;
-
-  transition:
-    background-color .12s ease,
-    color .12s ease;
 }
 
-/* Monster is used */
-.group-title.used span {
+.group-title.used {
   background: var(--used-bg);
   color: var(--used-text);
   box-shadow: inset 0 0 0 1px var(--used-border);
 }
 
-.group-title.used:hover span,
-.group-title.used:focus-visible span {
-  background: var(--used-border);
+.ability-button {
+  min-width: 30px;
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid #9fa39a;
+  border-radius: 6px;
+  background: #e6f332ba;
+  color: #040404;
+  font-size: .8rem;
+  font-weight: 850;
+  line-height: 1;
+  cursor: pointer;
 }
 
-.group-title:hover span,
-.group-title:focus-visible span {
-  filter: brightness(1.1);
+.ability-button:hover, .ability-button:focus-visible {
+  filter: brightness(1.08);
   outline: none;
 }
 
-/* ------------------------------------------------------------
-   HP cards
-   ------------------------------------------------------------ */
+.ability-caption {
+  color: var(--muted);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
 
 .hp-grid {
   display: grid;
@@ -410,55 +328,80 @@ h1 {
 
 .hp-card {
   position: relative;
-
   min-height: 116px;
   padding: 10px;
-
   border: 3px solid var(--red);
   border-radius: 10px;
-
   background: #0f0d0c;
   color: var(--cream);
-
   cursor: pointer;
   text-align: left;
   overflow: hidden;
-
-  transition:
-    transform .12s ease,
-    border-color .12s ease,
-    box-shadow .12s ease;
+  transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
 }
 
-.hp-card:hover,
-.hp-card:focus-visible {
+.hp-card:hover, .hp-card:focus-visible {
   transform: translateY(-2px);
   border-color: #c14b44;
   outline: none;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, .25);
-}
-
-.hp-card:active {
-  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(0,0,0,.25);
 }
 
 .hp-value {
   display: grid;
   place-items: center;
-
   height: 100%;
   min-height: 90px;
   padding: 10px 4px 22px;
-
   font-size: clamp(1.4rem, 5vw, 2rem);
   font-weight: 800;
 }
 
-.hp-value.empty {
-  color: #665c57;
-  font-size: 1.5rem;
-  font-weight: 500;
+.hp-value.empty { color: #665c57; font-size: 1.5rem; font-weight: 500; }
+
+.slot-number {
+  position: absolute;
+  left: 0; bottom: 0;
+  min-width: 34px;
+  height: 32px;
+  padding: 7px 9px;
+  border-top: 2px solid #d8cfc7;
+  border-right: 2px solid #d8cfc7;
+  border-top-right-radius: 13px;
+  background: var(--red-dark);
+  color: white;
+  font-weight: 800;
+  font-size: .82rem;
 }
+
+/* DIALOGS */
+dialog {
+  width: min(420px, calc(100% - 28px));
+  padding: 0;
+  border: 1px solid #6b5650;
+  border-radius: 16px;
+  color: var(--cream);
+  background: #251f1d;
+  box-shadow: 0 24px 80px rgba(0,0,0,.65);
+}
+
+dialog::backdrop { background: rgba(0,0,0,.68); backdrop-filter: blur(2px); }
+
+.modal { position: relative; padding: 28px; }
+.modal h2 { margin: 0 0 22px; font-size: 1.65rem; }
+
+.close-button {
+  position: absolute;
+  top: 12px; right: 13px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: transparent;
+  color: #bcaea6;
+  font-size: 1.7rem;
+  line-height: 1;
+}
+
+.close-button:hover { background: #3a302d; color: white; }
 
 .hp-value-control {
   display: grid;
@@ -469,298 +412,65 @@ h1 {
 }
 
 .hp-step-button {
-  width: 56px;
-  height: 56px;
+  width: 56px; height: 56px;
   padding: 0;
-
   border: 2px solid #6d5751;
   border-radius: 12px;
-
   background: #403532;
   color: var(--cream);
-
   font-size: 1.8rem;
   font-weight: 700;
-  line-height: 1;
-
   cursor: pointer;
-
-  transition: background-color .12s ease, transform .12s ease;
-}
-
-.hp-step-button:hover {
-  background: #51423d;
-  border-color: #8b7067;
-}
-
-.hp-step-button:active {
-  transform: scale(.94);
 }
 
 .hp-value-display {
   display: grid;
   place-items: center;
-
   min-height: 56px;
   padding: 8px 12px;
-
   border: 2px solid #6d5751;
   border-radius: 12px;
-
   background: #120f0e;
   color: var(--cream);
-
   font-size: 1.8rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
 }
 
-.hp-value-display.empty {
-  color: #665c57;
-  font-size: 1.4rem;
-  font-weight: 500;
-}
+.hp-value-display.empty { color: #665c57; font-size: 1.4rem; font-weight: 500; }
 
-.slot-number {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-
-  min-width: 34px;
-  height: 32px;
-  padding: 7px 9px;
-
-  border-top: 2px solid #d8cfc7;
-  border-right: 2px solid #d8cfc7;
-  border-top-right-radius: 13px;
-
-  background: var(--red-dark);
-  color: white;
-
-  font-weight: 800;
-  font-size: .82rem;
-}
-
-/* ------------------------------------------------------------
-   Round tracker
-   ------------------------------------------------------------ */
-
-.round-tracker {
-  min-width: 40px;
-  height: 34px;
-  padding: 0 8px;
-
-  border: 1px solid #9fa39a;
-  border-radius: 9px;
-
-  background: #e6f332ba;
-  color: #040404;
-
-  cursor: pointer;
-
-  font-size: .78rem;
-  font-weight: 800;
-  line-height: 1;
-  white-space: nowrap;
-
-  margin-right: 15px;
-}
-
-.round-tracker:hover,
-.round-tracker:focus-visible {
-  background: #51423d;
-  border-color: #80665e;
-  outline: none;
-}
-
-.round-tracker:active {
-  transform: translateY(1px);
-}
-
-/* ------------------------------------------------------------
-   Round modal
-   ------------------------------------------------------------ */
-
-.round-modal {
-  position: relative;
-  padding: 24px 28px 26px;
-  text-align: center;
-}
-
-.round-modal .eyebrow {
-  margin-bottom: 14px;
-}
-
-.round-controls {
+.hp-adjustments {
   display: grid;
-  grid-template-columns: 48px minmax(60px, 1fr) 48px;
-  align-items: center;
-  gap: 12px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: .5rem;
+  margin-top: 1rem;
 }
 
-.round-controls > span {
-  font-size: 2rem;
-  font-weight: 850;
-  line-height: 1;
-}
-
-.round-adjust-button {
-  width: 48px;
-  height: 48px;
-  padding: 0;
-
-  border: 1px solid #6d5751;
-  border-radius: 10px;
-
-  background: #403532;
-  color: var(--cream);
-
-  cursor: pointer;
-
-  font-size: 1.7rem;
-  font-weight: 500;
-  line-height: 1;
-}
-
-.round-adjust-button:hover,
-.round-adjust-button:focus-visible {
-  background: #51423d;
-  border-color: #8b7067;
-  outline: none;
-}
-
-.round-adjust-button:active {
-  transform: scale(.96);
-}
-
-/* ------------------------------------------------------------
-   General buttons
-   ------------------------------------------------------------ */
-
-.primary-button,
-.secondary-button,
-.add-button,
-.close-button {
+.hp-adjust-button {
+  min-height: 3rem;
   border: 0;
+  border-radius: .75rem;
+  font-weight: 700;
   cursor: pointer;
 }
 
-.primary-button,
-.secondary-button {
-  padding: 10px 16px;
-  border-radius: 9px;
-  font-weight: 750;
+.hp-adjust-button.damage { background: #3a2927; color: #ffb4a8; }
+.hp-adjust-button.heal { background: #25372b; color: #a8e6b5; }
+
+.hp-history { margin-top: 1.25rem; }
+.hp-history-header { margin-bottom: .5rem; }
+.hp-history-list { display: flex; flex-wrap: wrap; gap: .4rem; }
+.hp-history-list span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  min-height: 2rem;
+  padding: 0 .5rem;
+  border-radius: .5rem;
+  background: #2a2524;
 }
-
-.primary-button {
-  background: var(--red);
-  color: white;
-}
-
-.primary-button:hover {
-  background: #a52a25;
-}
-
-.secondary-button {
-  background: #403532;
-  color: var(--cream);
-  border: 1px solid #62504a;
-}
-
-.secondary-button:hover {
-  background: #51423d;
-}
-
-/* ------------------------------------------------------------
-   Add monster
-   ------------------------------------------------------------ */
-
-.add-button {
-  width: 42px;
-  height: 42px;
-
-  margin-right: 15px;
-
-  border-radius: 9px;
-  border: 1px solid #b04a44;
-
-  background: var(--red);
-  color: white;
-
-  font-size: 1.7rem;
-  font-weight: 500;
-  line-height: 1;
-}
-
-.add-button:hover {
-  background: #a52a25;
-}
-
-.add-button:disabled {
-  cursor: default;
-  opacity: .35;
-}
-
-/* ------------------------------------------------------------
-   Dialogs
-   ------------------------------------------------------------ */
-
-dialog {
-  width: min(420px, calc(100% - 28px));
-  padding: 0;
-
-  border: 1px solid #6b5650;
-  border-radius: 16px;
-
-  color: var(--cream);
-  background: #251f1d;
-
-  box-shadow: 0 24px 80px rgba(0, 0, 0, .65);
-}
-
-dialog::backdrop {
-  background: rgba(0, 0, 0, .68);
-  backdrop-filter: blur(2px);
-}
-
-.modal {
-  position: relative;
-  padding: 28px;
-}
-
-.modal h2 {
-  margin: 0 0 22px;
-  font-size: 1.65rem;
-}
-
-.modal label {
-  display: block;
-  margin-bottom: 8px;
-
-  color: #d7c9c0;
-
-  font-size: .9rem;
-  font-weight: 650;
-}
-
-.modal input {
-  width: 100%;
-  padding: 13px 14px;
-
-  border: 1px solid #6b5750;
-  border-radius: 9px;
-  outline: none;
-
-  background: #120f0e;
-  color: white;
-
-  font-size: 1.2rem;
-}
-
-.modal input:focus {
-  border-color: #b54841;
-  box-shadow: 0 0 0 3px rgba(181, 72, 65, .18);
-}
+.hp-history-empty { color: #888; }
 
 .modal-actions {
   display: flex;
@@ -769,246 +479,164 @@ dialog::backdrop {
   margin-top: 22px;
 }
 
-.close-button {
-  position: absolute;
-  top: 12px;
-  right: 13px;
-
-  width: 34px;
-  height: 34px;
-
-  border-radius: 50%;
-
-  background: transparent;
-  color: #bcaea6;
-
-  font-size: 1.7rem;
-  line-height: 1;
+.config-section { margin-bottom: 18px; }
+.config-section label {
+  display: block;
+  margin-bottom: 8px;
+  color: #d7c9c0;
+  font-size: .9rem;
+  font-weight: 650;
 }
 
-.close-button:hover {
-  background: #3a302d;
+.config-section select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #6b5750;
+  border-radius: 9px;
+  outline: none;
+  background: #120f0e;
   color: white;
+  font-size: 1rem;
 }
 
-/* ------------------------------------------------------------
-   Hint
-   ------------------------------------------------------------ */
+.config-note {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: .8rem;
+  line-height: 1.45;
+}
 
+.round-tracker {
+  min-width: 40px;
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid #9fa39a;
+  border-radius: 9px;
+  background: #e6f332ba;
+  color: #040404;
+  cursor: pointer;
+  font-size: .78rem;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+  margin-right: 0;
+}
+
+.round-modal {
+  position: relative;
+  padding: 24px 28px 26px;
+  text-align: center;
+}
+
+.round-modal .eyebrow { margin-bottom: 14px; }
+
+.round-controls {
+  display: grid;
+  grid-template-columns: 48px minmax(60px,1fr) 48px;
+  align-items: center;
+  gap: 12px;
+}
+
+.round-controls > span { font-size: 2rem; font-weight: 850; line-height: 1; }
+
+.round-adjust-button {
+  width: 48px; height: 48px;
+  padding: 0;
+  border: 1px solid #6d5751;
+  border-radius: 10px;
+  background: #403532;
+  color: var(--cream);
+  cursor: pointer;
+  font-size: 1.7rem;
+}
+
+/* HINT */
 .hint {
   margin: 15px 2px 0;
-
   color: var(--muted);
-
   text-align: center;
   font-size: .9rem;
 }
 
-/* ------------------------------------------------------------
-   Mobile
-   ------------------------------------------------------------ */
+/* MOBILE */
+@media (max-width: 700px) {
+  .app { width: calc(100% - 10px); padding-top: 10px; }
 
-@media (max-width: 560px) {
-
-  .app {
-    width: calc(100% - 10px);
-    padding-top: 10px;
+  .topbar-actions {
+    gap: 5px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 4px 0;
   }
 
-  .topbar {
-    margin-bottom: 1px;
-  }
+  .topbar-actions > button { margin: 2px; }
+  .history-actions { order: 1; }
+  #wakeLockButton { order: 2; }
+  #roundTrackerButton { order: 3; }
+  #configButton { order: 4; }
+  #resetButton { order: 5; }
 
-  .topbar h1 {
-    font-size: 1.15rem;
-  }
+  .secondary-button { padding: 7px 10px; font-size: .8rem; }
+  #wakeLockButton { font-size: .75rem; padding: 7px 10px; }
+  .add-button { width: 34px; height: 34px; font-size: 1.4rem; margin-right: 0; }
 
-  .eyebrow {
-    font-size: .58rem;
-    margin-bottom: 1px;
+  .heroes { gap: 4px; margin-top: 6px; }
+  .hero-panel {
+    grid-template-columns: 30px 1fr;
+    gap: 4px;
+    padding: 5px;
+    border-radius: 8px;
   }
+  .hero-label {
+    width: 30px;
+    min-height: 60px;
+    border-radius: 6px;
+    font-size: .7rem;
+  }
+  .hero-hp-label { display: none; }
+  .hero-hp-button { height: 27px; font-size: .75rem; }
+  .hero-turn, .hero-counter { height: 25px; border-radius: 6px; }
+  .counter-symbol { transform: scale(.8); }
 
-  .add-button {
-    width: 34px;
-    height: 34px;
-    font-size: 1.4rem;
-  }
+  .board { padding: 7px; border-radius: 11px; }
 
-  .secondary-button {
-    padding: 7px 10px;
-    font-size: .8rem;
-  }
-  
-    .secondary-button,
-  .round-tracker,
-  .add-button {
-    min-height: 38px;
-    min-width: 38px;
-  }
-  
-  #wakeLockButton {
-    min-width: auto;
-  }
-
-  .round-tracker {
-    min-width: 36px;
-    height: 34px;
-    padding: 0 7px;
-    font-size: .72rem;
-  }
-
-  .round-modal {
-    padding: 22px 22px 24px;
-  }
-
-  .round-controls {
-    grid-template-columns: 46px minmax(55px, 1fr) 46px;
-    gap: 9px;
-  }
-
-  .round-adjust-button {
-    width: 46px;
-    height: 46px;
-  }
-
-  .board {
-    padding: 7px;
-    border-radius: 11px;
-  }
-
-  /* Monster A/B/C naast de tiles */
   .monster-group {
     display: grid;
-    grid-template-columns: 32px 1fr;
+    grid-template-columns: 56px 1fr;
     align-items: center;
     gap: 5px;
     padding-bottom: 8px;
   }
 
-  .monster-group + .monster-group {
-    padding-top: 8px;
-  }
+  .monster-group + .monster-group { padding-top: 8px; }
 
-  .group-title {
+  .group-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
     margin: 0;
-    justify-content: center;
   }
 
-  .group-title span {
-    width: 28px;
-    height: 28px;
-    font-size: .75rem;
-    border-radius: 6px;
-  }
+  .group-title, .ability-button { width: 28px; height: 28px; }
+  .ability-button { min-width: 28px; padding: 0; font-size: .72rem; }
+  .ability-caption { font-size: .48rem; writing-mode: vertical-rl; }
 
-  /* 4 tiles per rij */
-  .hp-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 4px;
-  }
+  .hp-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+  .hp-card { min-height: 54px; height: 54px; padding: 3px; border-width: 2px; border-radius: 6px; }
+  .hp-value { min-height: 0; height: 100%; padding: 4px 2px 14px; font-size: 1.5rem; }
+  .slot-number { min-width: 18px; height: 17px; padding: 2px 4px; border-width: 1px; border-top-right-radius: 6px; font-size: .55rem; }
 
-  .hp-card {
-    min-height: 54px;
-    height: 54px;
-    padding: 3px;
+  .hp-value-control { grid-template-columns: 60px 1fr 60px; gap: 8px; }
+  .hp-step-button { width: 60px; height: 60px; font-size: 2rem; }
+  .hp-value-display { min-height: 60px; font-size: 2rem; }
+  .hp-adjustments { grid-template-columns: repeat(3,1fr); gap: 8px; }
+  .hp-adjust-button { min-height: 48px; font-size: 1rem; }
+  .hint { margin-top: 7px; font-size: .7rem; }
+}
 
-    border-width: 2px;
-    border-radius: 6px;
-  }
-
-  .hp-value {
-    min-height: 0;
-    height: 100%;
-    padding: 4px 2px 14px;
-    font-size: 1.5rem;
-  }
-
-  .hp-value.empty {
-    font-size: 1.5rem;
-  }
-
-  .slot-number {
-    min-width: 18px;
-    height: 17px;
-    padding: 2px 4px;
-
-    border-width: 1px;
-    border-top-right-radius: 6px;
-
-    font-size: .55rem;
-  }
-
-  .hero-turn {
-    height: 28px;
-  }
-
-  .hint {
-    margin-top: 7px;
-    font-size: .7rem;
-  }
-.topbar-actions {
-    gap: 6px;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 4px 0;
-  }
-  
-  .topbar-actions > button {
-    flex-shrink: 0;
-    width: auto;
-    margin: 2px;
-  }
-  
-  #wakeLockButton {
-    font-size: 0.75rem;
-    padding: 7px 10px;
-  }
-  
-  /* Reset undo/redo buttons */
-  .history-actions {
-    order: 1;
-  }
-  
-  #wakeLockButton {
-    order: 2;
-  }
-  
-  #roundTrackerButton {
-    order: 3;
-  }
-  
-  #addMonsterButton {
-    order: 4;
-  }
-  
-  #resetButton {
-    order: 5;
-  }
-
-  .hp-value-control {
-    grid-template-columns: 60px 1fr 60px;
-    gap: 8px;
-  }
-
-  .hp-step-button {
-    width: 60px;
-    height: 60px;
-    font-size: 2rem;
-  }
-
-  .hp-value-display {
-    min-height: 60px;
-    font-size: 2rem;
-  }
-
-  .hp-adjustments {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-  }
-
-  .hp-adjust-button {
-    min-height: 48px;
-    font-size: 1rem;
-  }
-  
+@media (max-width: 390px) {
+  .hero-panel { grid-template-columns: 26px 1fr; }
+  .hero-label { width: 26px; }
+  .hero-hp-button { font-size: .68rem; }
+  .monster-group { grid-template-columns: 48px 1fr; }
 }
