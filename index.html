@@ -7,183 +7,133 @@
   <title>Rove — Hitpoint Tracker</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
 </head>
 <body>
   <main class="app">
     <header class="topbar">
-       <div class="app-title">
-    <span>ROVE</span>
-    <span>DAMAGE TRACKER</span>
-  </div>
+      <div class="app-title">
+        <span>ROVE</span>
+        <span>DAMAGE TRACKER</span>
+      </div>
+
       <div class="topbar-actions">
         <div class="history-actions" aria-label="Wijzigingen">
-    <button
-      id="undoButton"
-      class="secondary-button"
-      type="button"
-      aria-label="Ongedaan maken"
-      title="Ongedaan maken"
-      disabled
-    >
-      ↶
-    </button>
+          <button id="undoButton" class="secondary-button" type="button"
+            aria-label="Ongedaan maken" title="Ongedaan maken" disabled>↶</button>
+          <button id="redoButton" class="secondary-button" type="button"
+            aria-label="Opnieuw uitvoeren" title="Opnieuw uitvoeren" disabled>↷</button>
+        </div>
 
-    <button
-      id="redoButton"
-      class="secondary-button"
-      type="button"
-      aria-label="Opnieuw uitvoeren"
-      title="Opnieuw uitvoeren"
-      disabled
-    >
-      ↷
-    </button>
-  </div>
-          <button
-    id="wakeLockButton"
-    class="secondary-button"
-    type="button"
-    aria-pressed="false"
-    title="Keep screen awake"
-  >
-    WakeLock
-  </button>
-        <button
-  id="roundTrackerButton"
-  class="round-tracker"
-  type="button"
-  aria-label="Huidige ronde wijzigen"
-  aria-expanded="false"
-  title="Huidige ronde wijzigen"
->
-  R<span id="currentRound">1</span>
-</button>
-        <button id="addMonsterButton" class="add-button" type="button" aria-label="Volgend monster toevoegen" title="Volgend monster toevoegen">M</button>
+        <button id="wakeLockButton" class="secondary-button" type="button"
+          aria-pressed="false" title="Keep screen awake">WakeLock</button>
+
+        <button id="roundTrackerButton" class="round-tracker" type="button"
+          aria-label="Huidige ronde wijzigen" aria-expanded="false"
+          title="Huidige ronde wijzigen">R<span id="currentRound">1</span></button>
+
+        <button id="configButton" class="add-button" type="button"
+          aria-label="Heroes en monsters instellen" title="Heroes en monsters instellen">M</button>
+
         <button id="resetButton" class="secondary-button" type="button">Reset</button>
       </div>
     </header>
-<section class="hero-turn-bar" id="heroTurnBar">
-<button class="hero-turn" data-hero="1">H1</button>
-<button class="hero-turn" data-hero="2">H2</button>
-<button class="hero-turn" data-hero="3">H3</button>
-</section>
-    <section class="hero-turn-bar counter-bar" id="heroCounterBar">
- <button class="hero-counter" data-counter="1">
-    <span class="counter-symbol" aria-hidden="true"></span>
-  </button>
-  <button class="hero-counter" data-counter="2">
-    <span class="counter-symbol" aria-hidden="true"></span>
-  </button>
-  <button class="hero-counter" data-counter="3">
-    <span class="counter-symbol" aria-hidden="true"></span>
-  </button>
-</section>
-    
+
+    <section class="heroes" id="heroes" aria-label="Heroes"></section>
+
     <section class="board" aria-label="Hitpoints van monsters">
       <div id="monsterGroups"></div>
     </section>
 
-    <p class="hint">Click on a field to adjust damage.</p>
+    <p class="hint">Klik op een veld om hitpoints aan te passen. Klik op een ronde-ability om 1–4 te wijzigen.</p>
   </main>
 
-<dialog id="hpDialog">
-  <div class="modal" id="hpForm">
-    <button
-      class="close-button"
-      type="button"
-      id="closeButton"
-      aria-label="Sluiten"
-    >
-      ×
-    </button>
+  <!-- HP editor: wordt gebruikt voor monsters én heroes -->
+  <dialog id="hpDialog">
+    <div class="modal" id="hpForm">
+      <button class="close-button" type="button" id="closeButton" aria-label="Sluiten">×</button>
 
-    <p class="eyebrow" id="dialogMonster">A</p>
-    <h2 id="dialogTitle">Veld 1</h2>
+      <p class="eyebrow" id="dialogMonster">MONSTER A</p>
+      <h2 id="dialogTitle">Veld 1</h2>
 
-    <!-- Grote waarde met − en + ernaast -->
-    <div class="hp-value-control">
-      <button
-        class="hp-step-button"
-        type="button"
-        data-step="-1"
-        aria-label="Verminderen met 1"
-      >−</button>
-
-      <span class="hp-value-display" id="hpValueDisplay">—</span>
-
-      <button
-        class="hp-step-button"
-        type="button"
-        data-step="1"
-        aria-label="Verhogen met 1"
-      >+</button>
-    </div>
-
-    <!-- Snelknoppen -->
-    <div class="hp-adjustments" aria-label="Hitpoints aanpassen">
-      <button type="button" class="hp-adjust-button damage" data-hp-change="-5">−5</button>
-      <button type="button" class="hp-adjust-button damage" data-hp-change="-3">−3</button>
-      <button type="button" class="hp-adjust-button damage" data-hp-change="-2">−2</button>
-      <button type="button" class="hp-adjust-button heal" data-hp-change="2">+2</button>
-      <button type="button" class="hp-adjust-button heal" data-hp-change="3">+3</button>
-      <button type="button" class="hp-adjust-button heal" data-hp-change="5">+5</button>
-    </div>
-
-    <!-- Vorige hitpoints -->
-    <section class="hp-history" aria-labelledby="hpHistoryTitle">
-      <div class="hp-history-header">
-        <span class="eyebrow" id="hpHistoryTitle">Vorige hitpoints</span>
+      <div class="hp-value-control">
+        <button class="hp-step-button" type="button" data-step="-1" aria-label="Verminderen met 1">−</button>
+        <span class="hp-value-display" id="hpValueDisplay">—</span>
+        <button class="hp-step-button" type="button" data-step="1" aria-label="Verhogen met 1">+</button>
       </div>
-      <div id="hpHistory" class="hp-history-list">
-        <span class="hp-history-empty">Nog geen wijzigingen</span>
+
+      <div class="hp-adjustments" aria-label="Hitpoints aanpassen">
+        <button type="button" class="hp-adjust-button damage" data-hp-change="-5">−5</button>
+        <button type="button" class="hp-adjust-button damage" data-hp-change="-3">−3</button>
+        <button type="button" class="hp-adjust-button damage" data-hp-change="-2">−2</button>
+        <button type="button" class="hp-adjust-button heal" data-hp-change="2">+2</button>
+        <button type="button" class="hp-adjust-button heal" data-hp-change="3">+3</button>
+        <button type="button" class="hp-adjust-button heal" data-hp-change="5">+5</button>
       </div>
-    </section>
 
-    <div class="modal-actions">
-      <button class="secondary-button" type="button" id="clearButton">Leegmaken</button>
-      <button class="primary-button" type="button" id="saveButton">Opslaan</button>
+      <section class="hp-history" aria-labelledby="hpHistoryTitle">
+        <div class="hp-history-header">
+          <span class="eyebrow" id="hpHistoryTitle">Vorige hitpoints</span>
+        </div>
+        <div id="hpHistory" class="hp-history-list">
+          <span class="hp-history-empty">Nog geen wijzigingen</span>
+        </div>
+      </section>
+
+      <div class="modal-actions">
+        <button class="secondary-button" type="button" id="clearButton">Leegmaken</button>
+        <button class="primary-button" type="button" id="saveButton">Opslaan</button>
+      </div>
     </div>
-  </div>
-</dialog>
+  </dialog>
 
-  
+  <!-- Heroes / monsters configuratie -->
+  <dialog id="configDialog">
+    <div class="modal config-modal">
+      <button class="close-button" type="button" id="configCloseButton" aria-label="Sluiten">×</button>
+      <p class="eyebrow">INSTELLINGEN</p>
+      <h2>Heroes &amp; monsters</h2>
+
+      <div class="config-section">
+        <label for="heroCountSelect">Aantal heroes</label>
+        <select id="heroCountSelect">
+          <option value="2">2 heroes</option>
+          <option value="3" selected>3 heroes</option>
+          <option value="4">4 heroes</option>
+        </select>
+      </div>
+
+      <div class="config-section">
+        <label for="monsterCountSelect">Aantal monster rows</label>
+        <select id="monsterCountSelect">
+          <option value="3" selected>3 monsters (A–C)</option>
+          <option value="4">4 monsters (A–D)</option>
+          <option value="5">5 monsters (A–E)</option>
+          <option value="6">6 monsters (A–F)</option>
+        </select>
+      </div>
+
+      <p class="config-note">Bestaande HP, turn-statussen en round-abilities blijven behouden als je aantallen wijzigt.</p>
+
+      <div class="modal-actions">
+        <button class="secondary-button" type="button" id="configCancelButton">Annuleren</button>
+        <button class="primary-button" type="button" id="configSaveButton">Opslaan</button>
+      </div>
+    </div>
+  </dialog>
+
   <dialog id="roundDialog">
-  <div class="round-modal">
-    <button
-      class="close-button"
-      type="button"
-      id="roundCloseButton"
-      aria-label="Sluiten"
-    >
-      ×
-    </button>
-
-    <p class="eyebrow">RONDE</p>
-
-    <div class="round-controls">
-      <button
-        class="round-adjust-button"
-        type="button"
-        id="roundMinusButton"
-        aria-label="Ronde verlagen"
-      >
-        −
-      </button>
-
-      <span id="roundDialogValue">1</span>
-
-      <button
-        class="round-adjust-button"
-        type="button"
-        id="roundPlusButton"
-        aria-label="Ronde verhogen"
-      >
-        +
-      </button>
+    <div class="round-modal">
+      <button class="close-button" type="button" id="roundCloseButton" aria-label="Sluiten">×</button>
+      <p class="eyebrow">RONDE</p>
+      <div class="round-controls">
+        <button class="round-adjust-button" type="button" id="roundMinusButton" aria-label="Ronde verlagen">−</button>
+        <span id="roundDialogValue">1</span>
+        <button class="round-adjust-button" type="button" id="roundPlusButton" aria-label="Ronde verhogen">+</button>
+      </div>
     </div>
-  </div>
-</dialog>
+  </dialog>
+
   <script src="script.js"></script>
 </body>
 </html>
